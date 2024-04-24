@@ -1,6 +1,8 @@
 package tuanbuffet.openSchedule;
 
 public class ProductData {
+    String productES = "ESP - EasySpeak";
+    String productESMix = "ESP24FAMX - Easy Speak For Adults Mix";
     String[][] EasySpeak ={
             {"18:00 - 18:30","10","10"},
             {"18:35 - 19:05","10","10"},

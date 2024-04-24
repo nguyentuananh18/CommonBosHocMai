@@ -17,12 +17,10 @@ public class Login extends WebUI {
     public static void login(String username, String password) throws InterruptedException {
         openBrowser();
         openURL(URL);
-        setText(accountInput, username);
-        Thread.sleep(1000);
-        setText(passwordInput, password);
-        Thread.sleep(1000);
+        enterText(accountInput, username);
+        enterText(passwordInput, password);
         clickElement(loginButton);
-        Thread.sleep(3000);
+        sleep(2);
         waitForPageLoaded();
     }
 }

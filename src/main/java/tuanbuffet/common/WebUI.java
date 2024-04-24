@@ -115,7 +115,7 @@ public class WebUI {
         return driver.switchTo().alert().getText();
     }
 
-    private static int EXPLICIT_WAIT_TIMEOUT = 5;
+    private static int EXPLICIT_WAIT_TIMEOUT = 10;
     private static int WAIT_PAGE_LEADED_TIMEOUT = 20;
 
     public WebUI() {
@@ -162,14 +162,23 @@ public class WebUI {
     }
 
     public static void clickElement(By by) {
+        waitForPageLoaded();
         waitForElementVisible(by);
         highLightElement(by);
         getWebElement(by).click();
         logConsole("Click on element " + by);
         //Report
     }
+    public static void clearText(By by){
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        highLightElement(by);
+        getWebElement(by).clear();
+        logConsole("Click on element " + by);
+    }
 
-    public static void setText(By by, String value) {
+    public static void enterText(By by, String value) {
+        waitForPageLoaded();
         waitForElementVisible(by);
         /*getWebElement(by).clear();*/
         getWebElement(by).sendKeys(value);
@@ -179,6 +188,7 @@ public class WebUI {
     }
 
     public static String getTextElement(By by) {
+        waitForPageLoaded();
         waitForElementVisible(by);
         logConsole("Get text of element " + by);
         logConsole("==> Text: " + getWebElement(by).getText());
@@ -221,12 +231,12 @@ public class WebUI {
         }
     }
     public static void waitForElementVisible(By by, int second) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second), Duration.ofMillis(500));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second));
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
     public static void waitForElementVisible(By by) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT), Duration.ofMillis(500));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
@@ -248,7 +258,16 @@ public class WebUI {
 
     public static boolean verifyElementIsDisplay(By by, int second) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second), Duration.ofMillis(500));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+    public static boolean verifyElementIsDisplay(By by) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
             wait.until(ExpectedConditions.visibilityOfElementLocated(by));
             return true;
         } catch (TimeoutException e) {
@@ -290,6 +309,7 @@ public class WebUI {
                 return js.executeScript("return document.readyState").toString().equals("complete");
             }
         };
+
 
     }
     public static void clickElementJS(By by){
