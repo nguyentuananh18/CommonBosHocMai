@@ -20,9 +20,7 @@ public class WebUI {
 
 
 
-    public static boolean isNumer(String str) {
-        return str.matches("-?\\d+(\\.\\d+)?");
-    }
+
     public static void switchToWindows(int number){
         Set<String> windows = driver.getWindowHandles();
         String firstWindow = (String)windows.toArray()[number];
@@ -49,33 +47,9 @@ public class WebUI {
         }
         return status;
     }
-    public static String Unsigned(String str){
-        switch (str){
-            case "đ":
-                str = "d";
-                break;
-            case "ê":
-                str = "e";
-                break;
-            case "ư":
-                str = "u";
-                break;
-            case "ô", "ơ":
-                str = "o";
-                break;
-            case"ă", "â":
-                str = "a";
-                break;
-        }
-        return str;
-    }
 
-    public static String removeAccent(String s) {
-        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
-        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        temp = pattern.matcher(temp).replaceAll("");
-        return temp.replaceAll("đ", "d");
-    }
+
+
     public static WebDriver driver;
     public static void HideBrowers(){
         ChromeOptions options = new ChromeOptions();
@@ -257,6 +231,7 @@ public class WebUI {
     }
 
     public static boolean verifyElementIsDisplay(By by, int second) {
+        waitForPageLoaded();
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second));
             wait.until(ExpectedConditions.visibilityOfElementLocated(by));
@@ -298,7 +273,7 @@ public class WebUI {
      * Wait for Page loaded
      * Chờ đợi trang tải xong (Javascript tải xong)
      */
-    public static void waitForPageLoaded() {
+    /*public static void waitForPageLoaded() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_PAGE_LEADED_TIMEOUT));
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
@@ -311,6 +286,14 @@ public class WebUI {
         };
 
 
+    }*/
+    public static void waitForPageLoaded() {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_PAGE_LEADED_TIMEOUT));
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
+        } catch (Exception e) {
+            System.out.println("Error waiting for page to load: " + e.getMessage());
+        }
     }
     public static void clickElementJS(By by){
         JavascriptExecutor js = (JavascriptExecutor) driver;

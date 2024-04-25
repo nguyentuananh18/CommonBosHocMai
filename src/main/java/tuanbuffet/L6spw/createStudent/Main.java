@@ -1,16 +1,19 @@
 package tuanbuffet.L6spw.createStudent;
 
+import java.text.Normalizer;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 public class Main {
     public static void main(String[] args) {
-        String input = "2"; // Thay đổi chuỗi này để kiểm tra
+        System.out.println(removeAccent("Nguyễn Tuấn Anh"));
+    }
 
-        // Biểu thức chính quy để tìm kiếm ký tự đặc biệt
-        String regex = "[^a-zA-Z0-9]"; // Tìm ký tự không phải là chữ cái hoặc số
+    public static String removeAccent(String s) {
 
-        if (input.matches(regex)) {
-            System.out.println("Chuỗi chứa ký tự đặc biệt.");
-        } else {
-            System.out.println("Chuỗi không chứa ký tự đặc biệt.");
-        }
+        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        temp = pattern.matcher(temp).replaceAll("");
+        return temp.replaceAll("đ", "d");
     }
 }

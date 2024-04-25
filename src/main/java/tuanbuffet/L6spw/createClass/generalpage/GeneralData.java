@@ -14,7 +14,8 @@ public class GeneralData {
 
     *//*public String getProduct() {
         return product.getProduct();
-    }*//*
+    }*/
+/*
 
     public String getClassName() {
         return className;

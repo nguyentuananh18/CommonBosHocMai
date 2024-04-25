@@ -6,6 +6,8 @@ public class Main {
         Data packageData = new Data("ST112826","1:2","Thúy Huê");
         PackagePage packagePage = new PackagePage(packageData);
         login("ctvanhnt2","anhnt216836");
-        packagePage.enterInformationPackage();
+        /*packagePage.enterInformationPackage();*/
+        ConfigurationPage configurationPage = new ConfigurationPage(packageData);
+        configurationPage.OpenTeachAll();
     }
 }

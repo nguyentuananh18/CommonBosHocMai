@@ -6,12 +6,14 @@ public class Entry {
 
     public static void main(String[] args) throws InterruptedException {
         StudentData studentData;
-        StudentPage studentPage;
-        studentData = new StudentData("Nguyễn Tuấn Anh","81902278192","Tuanbuffet123@gmail.com");
-        studentPage = new StudentPage(studentData);
+        CreateStudentPage createStudentPage;
+        studentData = new StudentData("Nguyễn Tuấn Anh","9022781922","Tuanbuffet123@gmail.commmm       ");
+        createStudentPage = new CreateStudentPage(studentData);
+        Exception exception = new Exception();
 
         login("ctvanhnt2", "anhnt216836");
-        studentPage.EnterInformation();
+        createStudentPage.EnterInformation();
+        System.out.println(exception.getNotifyMessage());
 
     }
 }

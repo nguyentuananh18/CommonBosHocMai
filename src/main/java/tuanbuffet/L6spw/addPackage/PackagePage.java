@@ -26,6 +26,7 @@ public class PackagePage {
         clickElement(addPackageButton);
         enterText(selectProductButton,product.getProductCourseName() + Keys.DOWN + Keys.ENTER);
         enterText(selectPackageButton,"320"  + Keys.DOWN + Keys.ENTER);
+        /*clickElement(addButton);*/
     }
 
 }
