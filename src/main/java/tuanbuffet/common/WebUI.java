@@ -34,21 +34,6 @@ public class WebUI {
         robot.keyRelease(KeyEvent.VK_T);
         Thread.sleep(1000);
     }
-    public static boolean veryElementIsDisplay(By by, int timeOut){
-        boolean status = false;
-        for (int i = 0; i<=timeOut; i++){
-            if (driver.findElement(by).isDisplayed()){
-                status = true;
-                break;
-            }
-            else {
-                sleep(1);
-            }
-        }
-        return status;
-    }
-
-
 
     public static WebDriver driver;
     public static void HideBrowers(){
@@ -89,7 +74,7 @@ public class WebUI {
         return driver.switchTo().alert().getText();
     }
 
-    private static int EXPLICIT_WAIT_TIMEOUT = 10;
+    private static int EXPLICIT_WAIT_TIMEOUT = 3;
     private static int WAIT_PAGE_LEADED_TIMEOUT = 20;
 
     public WebUI() {

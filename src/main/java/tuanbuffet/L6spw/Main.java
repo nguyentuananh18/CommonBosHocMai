@@ -5,6 +5,8 @@ import tuanbuffet.L6spw.createClass.curriculumPage.CurriculumPage;
 import tuanbuffet.L6spw.createClass.generalpage.ClassName;
 import tuanbuffet.L6spw.createClass.generalpage.GeneralData;
 import tuanbuffet.L6spw.createClass.generalpage.GeneralPage;
+import tuanbuffet.L6spw.createStudent.CreateStudentData;
+import tuanbuffet.L6spw.createStudent.CreateStudentPage;
 import tuanbuffet.common.Product;
 import tuanbuffet.L6spw.createClass.schedulePage.Curriculum;
 import tuanbuffet.L6spw.createClass.schedulePage.ScheduleData;
@@ -15,16 +17,39 @@ import tuanbuffet.common.Login;
 
 public class Main {
     public static String[][] information = {
-            {"TestDemo", "phamthithuthao19071981@gmail.com", "396670435", "SPU 1:2", "Thứ sáu : 19:10-19:40 Thứ bảy : 19:10-19:40", "Trishamae", "Kid's Box Movers 1", "ST111810"},
+            {"IdST","TestDemo", "phamthithuthao19071981@gmail.com", "396670435", "SPU 1:2", "Thứ sáu : 19:10-19:40 Thứ bảy : 19:10-19:40", "Trishamae", "Kid's Box Movers 1", "ST111810"},
+            {"IdST","Lê Bảo Nam 3","phamthithuao71981@gmail.com","3966435","SPU 1:1","Thứ sáu : 19:10-19:40 Thứ bảy : 19:10-19:40","Trishamae","Kid's Box Movers 1","ST111810"},
+            {"IdST","Kangdokyun","dothihued@gmail.com","821073130995","SPU 1:1","Thứ hai: 14:00-14:30 Thứ ba: 14:00-14:30 Thứ tư: 14:00-14:30 Thứ sáu: 14:00-14:30","Yến Nhi 7","Kid's Box Movers","ST096531"},
+            {"IdST","Kangdokyun2","dothihued@gmail.com","821073130995","SPU 1:1","Thứ hai: 14:00-14:30 Thứ ba: 14:00-14:30 Thứ tư: 14:00-14:30 Thứ sáu: 14:00-14:30","Yến Nhi 7","Kid's Box Movers","ST096531"},
 
-            /*{"Lê Bảo Nam 3","phamthithuao71981@gmail.com","3966435","SPU 1:1","Thứ sáu : 19:10-19:40 Thứ bảy : 19:10-19:40","Trishamae","Kid's Box Movers 1","ST111810"},
-            {"Kangdokyun","dothihued@gmail.com","821073130995","SPU 1:1","Thứ hai: 14:00-14:30 Thứ ba: 14:00-14:30 Thứ tư: 14:00-14:30 Thứ sáu: 14:00-14:30","Yến Nhi 7","Kid's Box Movers","ST096531"},
-            {"Kangdokyun2","dothihued@gmail.com","821073130995","SPU 1:1","Thứ hai: 14:00-14:30 Thứ ba: 14:00-14:30 Thứ tư: 14:00-14:30 Thứ sáu: 14:00-14:30","Yến Nhi 7","Kid's Box Movers","ST096531"},*/
+
     };
 
     public static void main(String[] args) throws InterruptedException {
         Login login = new Login();
         login.login("ctvanhnt2","anhnt216836");
+        CreateStudentData createStudentData;
+        CreateStudentPage createStudentPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         GeneralPage generalPage = new GeneralPage();
         ClassName className;
         StudentData studentData;
@@ -35,6 +60,45 @@ public class Main {
         CurriculumPage curriculumPage;
 
         for (int i = 0; i < information.length; i++) {
+            createStudentData = new CreateStudentData(information[i][0],information[i][1],information[i][2]);
+            createStudentPage = new CreateStudentPage(createStudentData);
+            createStudentPage.EnterInformation();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             Product product = new Product(information[i][3], information[i][5]);
             if (i < information.length - 1) {
                 className = new ClassName(information[i][0], information[i][3], information[i][4], information[i][5], information[i][6], information[i + 1][0], information[i + 1][3], information[i + 1][4], information[i + 1][5], information[i + 1][6]);
@@ -61,6 +125,8 @@ public class Main {
                 curriculumPage.Enterinformation();
             }
         }
+
+
 
     }
 }
