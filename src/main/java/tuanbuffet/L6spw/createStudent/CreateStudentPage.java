@@ -1,15 +1,12 @@
 package tuanbuffet.L6spw.createStudent;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+
 import static tuanbuffet.common.WebUI.*;
+
 public class CreateStudentPage {
     private String URL = "https://spu.bos.hocmai.com/students/create";
-
-    String messageMailExist = "Email đã tồn tại";
-    String messageClassIn = "ClassIn Phone đã tồn tại";
-    String phoneAndName = "Họ tên và số điện thoại liên lạc đã tồn tại";
-    String success = "Tạo học viên thành công";
-
 
     private final By nameInput = By.xpath("//input[@name=\"fullName\"]");
     private final By codePhoneButton = By.xpath("//div[contains(text(),'Số Liên Hệ')]//parent::legend//parent::div//following-sibling::div//input[@value=\"+84\"]");
@@ -25,37 +22,41 @@ public class CreateStudentPage {
     private final By submitButton = By.xpath("//button[@type='submit']");
 
     CreateStudentData createStudentData;
-    public CreateStudentPage(CreateStudentData data){
+
+    public CreateStudentPage(CreateStudentData data) {
         this.createStudentData = data;
     }
-    public void EnterInformation(){
+
+    public void EnterInformation() {
         openURL(URL);
         EnterData();
         clickElement(submitButton);
     }
-    public void EnterData(){
+
+    public void EnterData() {
         enterText(nameInput, createStudentData.getName());
         clickElement(codePhoneButton);
         sleep(0.5);
-        enterText(codePhoneInput2,Keys.CLEAR + getAreaCode() + Keys.DOWN + Keys.ENTER);
+        enterText(codePhoneInput2, Keys.CLEAR + getAreaCode() + Keys.DOWN + Keys.ENTER);
         enterText(phoneInput, getPhoneAfterEditing());
         enterText(mailInput, createStudentData.getMail());
-        enterText(birthDayInput,"01/01/2024");
+        enterText(birthDayInput, "01/01/2024");
         clickElement(representativeButton);
-        enterText(CKSHInput,"(cs) - ( CS Default )" + Keys.DOWN + Keys.ENTER);
+        enterText(CKSHInput, "(cs) - ( CS Default )" + Keys.DOWN + Keys.ENTER);
         clickElement(codeClassInButton);
         sleep(0.5);
-        enterText(codeClassInInput,Keys.CLEAR + getAreaCode() + Keys.DOWN + Keys.ENTER);
+        enterText(codeClassInInput, Keys.CLEAR + getAreaCode() + Keys.DOWN + Keys.ENTER);
         enterText(classInPhoneInput, getPhoneAfterEditing());
     }
-    public String getPhoneAfterEditing(){
-        String lastPhone ="";
-        switch (getAreaCode()){
-            case "+81 Japan", "+82 Korea, Republic of South Korea","+33 France":{
+
+    public String getPhoneAfterEditing() {
+        String lastPhone = "";
+        switch (getAreaCode()) {
+            case "+81 Japan", "+82 Korea, Republic of South Korea", "+33 France": {
                 lastPhone = createStudentData.getPhone().substring(2);
             }
             break;
-            case "+420 Czech Republic" :{
+            case "+420 Czech Republic": {
                 lastPhone = createStudentData.getPhone().substring(3);
             }
             break;
@@ -73,24 +74,20 @@ public class CreateStudentPage {
         else lastPhone = studentData.getPhone();*/
         return lastPhone;
     }
-    public String getAreaCode(){
+
+    public String getAreaCode() {
         String areaCode = "";
-        if (createStudentData.getPhone().length() > 10){
-           if (createStudentData.getPhone().startsWith("81")){
-               areaCode = "+81 Japan";
-           }
-           else if (createStudentData.getPhone().startsWith("82")){
-               areaCode = "+82 Korea, Republic of South Korea";
-           }
-           else if (createStudentData.getPhone().startsWith("420")){
-               areaCode = "+420 Czech Republic";
-           }
-           else if (createStudentData.getPhone().startsWith("33")){
-               areaCode ="+33 France";
-           }
-           else areaCode = "+84 Vietnam";
-        }
-        else{
+        if (createStudentData.getPhone().length() > 10) {
+            if (createStudentData.getPhone().startsWith("81")) {
+                areaCode = "+81 Japan";
+            } else if (createStudentData.getPhone().startsWith("82")) {
+                areaCode = "+82 Korea, Republic of South Korea";
+            } else if (createStudentData.getPhone().startsWith("420")) {
+                areaCode = "+420 Czech Republic";
+            } else if (createStudentData.getPhone().startsWith("33")) {
+                areaCode = "+33 France";
+            } else areaCode = "+84 Vietnam";
+        } else {
             areaCode = "+84 Vietnam";
         }
         return areaCode;

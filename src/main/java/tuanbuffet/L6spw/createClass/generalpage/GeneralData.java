@@ -1,6 +1,6 @@
 package tuanbuffet.L6spw.createClass.generalpage;
 
-import tuanbuffet.common.Product;
+import tuanbuffet.L6spw.commonL6.Product;
 
 public class GeneralData {
 

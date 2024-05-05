@@ -1,5 +1,6 @@
 package tuanbuffet.L6spw.createStudent;
-import static  tuanbuffet.common.StringProcessing.*;
+
+import static tuanbuffet.common.StringProcessing.*;
 
 public class CreateStudentData {
     private String name;
@@ -17,7 +18,7 @@ public class CreateStudentData {
     }
 
     public String getPhone() {
-        return  DeleteSpecialCharacters(extractNumbers(phone.trim()));
+        return DeleteSpecialCharacters(extractNumbers(phone.trim()));
     }
 
     public String getMail() {

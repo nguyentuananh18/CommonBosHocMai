@@ -2,7 +2,7 @@ package tuanbuffet.L6spw.addPackage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import tuanbuffet.common.Product;
+import tuanbuffet.L6spw.commonL6.Product;
 
 import static tuanbuffet.common.WebUI.*;
 
@@ -14,9 +14,9 @@ public class PackagePage {
     By selectPackageButton = By.xpath("(//label[contains(text(),'Chọn Gói')])[1]//following-sibling::div/input");
     By addButton = By.xpath("//button[normalize-space()='Thêm']");
 
-    Data packageData;
+    addPackageAndConfiurationData packageData;
 
-    public PackagePage(Data packageData){
+    public PackagePage(addPackageAndConfiurationData packageData){
         this.packageData = packageData;
     }
     public void enterInformationPackage(){
@@ -24,8 +24,11 @@ public class PackagePage {
         openURL(URl +packageData.getIdBos().substring(2) + "/package" );
         System.out.println(product.getProductCourseName());
         clickElement(addPackageButton);
-        enterText(selectProductButton,product.getProductCourseName() + Keys.DOWN + Keys.ENTER);
+        enterText(selectProductButton,product.getProductCourseName());
+        sleep(1);
+        enterText(selectProductButton, "" +Keys.DOWN + Keys.ENTER);
         enterText(selectPackageButton,"320"  + Keys.DOWN + Keys.ENTER);
+        sleep(0.5);
         /*clickElement(addButton);*/
     }
 

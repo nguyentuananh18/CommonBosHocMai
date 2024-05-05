@@ -27,8 +27,7 @@ public class SearchStudentPage {
             if (classInOnWeb.contains(studentData.getPhone())) {
                 idBos = idBosOnWeb;
                 break;
-            }
-            else if (i == listElements(listStudentData)){
+            } else if (i == listElements(listStudentData)) {
                 idBos = "Trùng TK";
             }
         }
@@ -45,9 +44,7 @@ public class SearchStudentPage {
             String idBosOnWeb = getTextElement("//tbody/tr[" + i + "]/td[1]");
             String nameOnWeb = getTextElement("//tbody/tr[" + i + "]/td[2]");
             if (classInOnWeb.contains(studentData.getPhone())) {
-                if (removeAccent(nameOnWeb.toLowerCase()).contains(removeAccent(studentData.getName().toLowerCase()))
-                        ||
-                        removeAccent(studentData.getName()).toLowerCase().contains(removeAccent(nameOnWeb.toLowerCase()))) {
+                if (removeAccent(nameOnWeb.toLowerCase()).contains(removeAccent(studentData.getName().toLowerCase())) || removeAccent(studentData.getName()).toLowerCase().contains(removeAccent(nameOnWeb.toLowerCase()))) {
                     idBos = idBosOnWeb;
                     break;
                 }

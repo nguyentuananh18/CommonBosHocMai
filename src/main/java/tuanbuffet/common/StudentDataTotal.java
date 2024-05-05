@@ -12,9 +12,7 @@ public class StudentDataTotal {
     private String curriculum;
     private String idBOS;
     public StudentDataTotal(){
-
     }
-
     public StudentDataTotal(String idST, String name, String email, String classIn, String phone, String classType, String schedule, String teacher, String curriculum, String idBOS) {
         this.idST = idST;
         this.name = name;

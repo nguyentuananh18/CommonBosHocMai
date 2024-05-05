@@ -19,13 +19,12 @@ import java.util.regex.Pattern;
 public class WebUI {
 
 
-
-
-    public static void switchToWindows(int number){
+    public static void switchToWindows(int number) {
         Set<String> windows = driver.getWindowHandles();
-        String firstWindow = (String)windows.toArray()[number];
+        String firstWindow = (String) windows.toArray()[number];
         driver.switchTo().window(firstWindow);
     }
+
     public static void NewTab() throws AWTException, InterruptedException {
         Robot robot = new Robot();
         robot.keyPress(KeyEvent.VK_CONTROL);
@@ -36,41 +35,49 @@ public class WebUI {
     }
 
     public static WebDriver driver;
-    public static void HideBrowers(){
+
+    public static void HideBrowers() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
         driver = new ChromeDriver(options);
     }
-    public static void clickPartialLinkText(String content){
+
+    public static void clickPartialLinkText(String content) {
         By locator = By.partialLinkText(content);
         clickElement(locator);
     }
-    public static void openBrowserOption(String numbersProfiles){
+
+    public static void openBrowserOption(String numbersProfiles) {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--user-data-dir=C:\\Users\\Nguyen Tuan Anh\\AppData\\Local\\Google\\Chrome\\User Data\\");
         options.addArguments("--profile-directory=Profile " + numbersProfiles);
         driver = new ChromeDriver(options);
     }
+
     public static void openBrowser() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(40));
     }
+
     public static void closeBrowser() throws InterruptedException {
         Thread.sleep(1000);
         driver.quit();
     }
 
-    public static void AlertDismiss(){
+    public static void AlertDismiss() {
         driver.switchTo().alert().dismiss();
     }
-    public static void AlertAccept(){
+
+    public static void AlertAccept() {
         driver.switchTo().alert().accept();
     }
-    public static void AlertSendKeys(String text){
+
+    public static void AlertSendKeys(String text) {
         driver.switchTo().alert().sendKeys(text);
     }
-    public static String AlertClick(){
+
+    public static String AlertClick() {
         return driver.switchTo().alert().getText();
     }
 
@@ -79,18 +86,22 @@ public class WebUI {
 
     public WebUI() {
     }
+
     public static WebElement getWebElement(By by) {
         return driver.findElement(by);
     }
+
     public static void logConsole(String message) {
         /*System.out.println(message);*/
     }
+
     public static void hoverOnElement(By by) {
         waitForElementVisible(by);
         Actions action = new Actions(driver);
         action.moveToElement(getWebElement(by));
         logConsole("Hover on element " + by);
     }
+
     public static WebElement highLightElement(By by) {
         waitForElementVisible(by);
         // Tô màu border ngoài chính element chỉ định - màu đỏ (có thể đổi màu khác)
@@ -128,7 +139,8 @@ public class WebUI {
         logConsole("Click on element " + by);
         //Report
     }
-    public static void clearText(By by){
+
+    public static void clearText(By by) {
         waitForPageLoaded();
         waitForElementVisible(by);
         highLightElement(by);
@@ -142,7 +154,8 @@ public class WebUI {
         /*getWebElement(by).clear();*/
         getWebElement(by).sendKeys(value);
     }
-    public static void refreshPageWeb(){
+
+    public static void refreshPageWeb() {
         driver.navigate().refresh();
     }
 
@@ -170,7 +183,8 @@ public class WebUI {
         js.executeScript("arguments[0].scrollIntoView(true);", getWebElement(by));
         logConsole("Scroll to element " + by);
     }
-    public static void scrollToElementWithJS(int y){
+
+    public static void scrollToElementWithJS(int y) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0, " + y + ")");
     }
@@ -179,9 +193,11 @@ public class WebUI {
         //Dùng Actions class
 
     }
+
     public static void scrollToElementWithRobot(By by) {
         //Dùng Robot class
     }
+
     public static void sleep(double second) {
         try {
             Thread.sleep((long) (1000 * second));
@@ -189,6 +205,7 @@ public class WebUI {
             throw new RuntimeException(e);
         }
     }
+
     public static void waitForElementVisible(By by, int second) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second));
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
@@ -225,6 +242,7 @@ public class WebUI {
             return false;
         }
     }
+
     public static boolean verifyElementIsDisplay(By by) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
@@ -234,6 +252,7 @@ public class WebUI {
             return false;
         }
     }
+
     public static int listElements(By by) {
         List<WebElement> listElement = driver.findElements(by);
         return listElement.size();
@@ -250,7 +269,8 @@ public class WebUI {
             return false;
         }
     }
-    public static String getTextElement(String xpath){
+
+    public static String getTextElement(String xpath) {
         return driver.findElement(By.xpath(xpath)).getText();
     }
 
@@ -280,12 +300,14 @@ public class WebUI {
             System.out.println("Error waiting for page to load: " + e.getMessage());
         }
     }
-    public static void clickElementJS(By by){
+
+    public static void clickElementJS(By by) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         WebElement button = driver.findElement(by);
         js.executeScript("arguments[0].click();", button);
     }
-    public static void clickElementJS(String x){
+
+    public static void clickElementJS(String x) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("document.getElementsById('input')[3].click()");
     }
