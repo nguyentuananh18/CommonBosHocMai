@@ -13,6 +13,7 @@ import tuanbuffet.L6spw.createClass.schedulePage.ScheduleData;
 import tuanbuffet.L6spw.createClass.schedulePage.SchedulePage;
 import tuanbuffet.L6spw.createClass.stuendtPage.StudentData;
 import tuanbuffet.L6spw.createClass.stuendtPage.StudentPage;
+import tuanbuffet.controlExcelFile.ExcelHelper;
 
 public class Main {
     public static String[][] information = {
@@ -22,7 +23,7 @@ public class Main {
             {"IdST","Kangdokyun2","dothihued@gmail.com","821073130995","SPU 1:1","Thứ hai: 14:00-14:30 Thứ ba: 14:00-14:30 Thứ tư: 14:00-14:30 Thứ sáu: 14:00-14:30","Yến Nhi 7","Kid's Box Movers","ST096531"},
     };
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         CreateStudentData createStudentData;
         CreateStudentPage createStudentPage;
         GeneralPage generalPage = new GeneralPage();
@@ -33,12 +34,14 @@ public class Main {
         SchedulePage schedule;
         CurriculumData curriculumData;
         CurriculumPage curriculumPage;
+        ExcelHelper excel = new ExcelHelper();
+        excel.setExcelFile("./L6SpeakWell.xlsx", "Sheet1");
 
-        for (int i = 0; i < information.length; i++) {
-            createStudentData = new CreateStudentData(information[i][0],information[i][1],information[i][2]);
+        for (int i = 1; i < information.length; i++) {
+            createStudentData = new CreateStudentData(excel.getCell("NAME",i),excel.getCell("MAIL",i),excel.getCell("PHONE",i));
             createStudentPage = new CreateStudentPage(createStudentData);
             createStudentPage.EnterInformation();
-            Product product = new Product(information[i][3], information[i][5]);
+            Product product = new Product(excel.getCell("CLASS TYPE",i),excel.getCell("TEACHER",i));
             if (i < information.length - 1) {
                 className = new ClassName(information[i][0], information[i][3], information[i][4], information[i][5], information[i][6], information[i + 1][0], information[i + 1][3], information[i + 1][4], information[i + 1][5], information[i + 1][6]);
             } else {

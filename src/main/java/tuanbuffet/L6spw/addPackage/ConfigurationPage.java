@@ -11,9 +11,14 @@ public class ConfigurationPage {
         this.data = data;
     }
     public  void OpenTeachAll(){
-        openURL(URL + data.getIdBos().substring(2) + "/configuration");
-        waitForElementVisible(contentPage);
-        clickElement(teachAllButton);
-        /*clickElement(saveButton);*/
+        if (data.getIdBos().isEmpty()){
+        }
+        else {
+            openURL(URL + data.getIdBos().substring(2) + "/configuration");
+            waitForElementVisible(contentPage);
+            clickElement(teachAllButton);
+            /*clickElement(saveButton);*/
+        }
+
     }
 }

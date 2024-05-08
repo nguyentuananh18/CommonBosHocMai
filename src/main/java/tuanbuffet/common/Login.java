@@ -15,7 +15,6 @@ public class Login extends WebUI {
     Scanner sc = new Scanner(System.in);
 
     public static void login(String username, String password) throws InterruptedException {
-        openBrowser();
         openURL(URL);
         enterText(accountInput, username);
         enterText(passwordInput, password);

@@ -23,7 +23,7 @@ public class StudentPage {
         clickElement(saveAndContinueButton);
     }
     public void EnterIdBos(String idBos) throws InterruptedException {
-        setText(informationStudentInput,idBos);
+        enterText(informationStudentInput,idBos);
         Thread.sleep(1000);
         clickElement(searchButton);
         Thread.sleep(3000);

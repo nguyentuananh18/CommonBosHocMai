@@ -43,11 +43,4 @@ public class Exception {
     public void ErrorHandling(){
         //
     }
-
-    public String getNotifyMessage(){
-        if (veryElementIsDisplay(notifyMessage,2)){
-            return getTextElement(notifyMessage);
-        }
-        else return "";
-    }
 }

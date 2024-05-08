@@ -14,51 +14,40 @@ import tuanbuffet.L6spw.createClass.schedulePage.SchedulePage;
 import tuanbuffet.L6spw.createClass.stuendtPage.StudentData;
 import tuanbuffet.L6spw.createClass.stuendtPage.StudentPage;
 import tuanbuffet.L6spw.commonL6.Product;
+import tuanbuffet.controlExcelFile.ExcelHelper;
 
 import static tuanbuffet.common.Login.*;
 
 public class Main {
-    static String[][] information = {
-            {"abc", "Nguyễn Đức Minh 20", "Tranthanhhiep2954@gmail.com", "984570017", "123", "SPU 1:2", "Thứbảy:18:35-19:05Chủnhật:18:35-19:06", "Kelly 3", "Kid's Box Beginners (48)", "ST096532"},
-            {"abc", "Nguyễn Đức Minh 21", "Tranthanhhiep2954@gmail.com", "984570017", "123", "SPU 1:1", "Thứbảy:18:35-19:05Chủnhật:18:35-19:07", "Kelly 4", "Kid's Box Beginners (48)", "ST096533"},
-            {"abc", "Nguyễn Đức Minh 22", "Tranthanhhiep2954@gmail.com", "984570017", "123", "SPU 1:4", "Thứbảy:18:35-19:05Chủnhật:18:35-19:08", "Kelly 5", "Kid's Box Beginners (48)", "ST096534"},
-            {"abc", "Nguyễn Đức Minh 23", "Tranthanhhiep2954@gmail.com", "984570017", "123", "SPU 1:5", "Thứbảy:18:35-19:05Chủnhật:18:35-19:09", "Kelly 6", "Kid's Box Beginners (48)", "ST096535"},
-            {"abc", "Nguyễn Đức Minh 24", "Tranthanhhiep2954@gmail.com", "984570017", "123", "SPU 1:6", "Thứbảy:18:35-19:05Chủnhật:18:35-19:10", "Kelly 7", "Kid's Box Beginners (48)", "ST096536"},
-            {"abc", "Nguyễn Đức Minh 25", "Tranthanhhiep2954@gmail.com", "984570017", "123", "SPU 1:7", "Thứbảy:18:35-19:05Chủnhật:18:35-19:11", "Kelly 8", "Kid's Box Beginners (48)", "ST096537"},
-            {"abc", "Nguyễn Đức Minh 26", "Tranthanhhiep2954@gmail.com", "984570017", "123", "SPU 1:8", "Thứbảy:18:35-19:05Chủnhật:18:35-19:12", "Kelly 9", "Kid's Box Beginners (48)", "ST096538"},
-    };
-
     public static void main(String[] args) throws InterruptedException {
 
-        RunCreateStudentPage entry = new RunCreateStudentPage();
+        ExcelHelper excel = new ExcelHelper();
+        RunCreateStudentPage runCreateStudentPage = new RunCreateStudentPage();
         addPackageAndConfiurationData addPackageAndConfiurationData;
         PackagePage packagePage;
         ConfigurationPage configurationPage;
-        /*openBrowser();*/
+        excel.setExcelFile("./L6SpeakWell.xlsx", "Sheet1");
+
+        openBrowser();
         login("ctvanhnt2", "anhnt216836");
-        for (String[] information : information) {
 
-            /*Tạo Account ClassIn*/
-            String idbos = entry.RunCreateStudent(information[1], information[2], information[4]);
 
+        for (int i = 1; ; i++) {
+            if (excel.getCell("ID", i).isEmpty() && excel.getCell("NAME", i).isEmpty()) {
+                break;
+            }
+            String idbos = runCreateStudentPage.RunCreateStudent(excel.getCell("NAME", i), excel.getCell("MAIL", i), excel.getCell("PHONE", i));
             /*Nếu như id bos bị trùng TK*/
             if (idbos.contains("Trùng TK") || idbos.isEmpty()) {
                 /*sẽ điền chữ trùng TK vào ô classIn*/
-                information[3] = idbos;
-            }
-
-            /*Ngược lại nếu như ra id bos, thì sẽ điền zô ô ID BOS*/
-            else information[9] = idbos;
-
-            /*Duyệt vòng lặp để in ra tất cả các thông tin từ idST đến ô id Bos*/
-            for (int j = 0; j < 10; j++) {
-                if (j < 9) {
-                    System.out.print(information[j] + "|");
-                } else System.out.println(information[j]);
+                excel.setCell(idbos, "CLASSIN", i);
+            } else {
+                /*Ngược lại nếu như ra id bos, thì sẽ điền zô ô ID BOS*/
+                excel.setCell(idbos, "IDBOS", i);
             }
 
             /*Add Package and open schedule*/
-            addPackageAndConfiurationData = new addPackageAndConfiurationData(information[9], information[5], information[7]);
+            addPackageAndConfiurationData = new addPackageAndConfiurationData(excel.getCell("IDBOS", i), excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i));
             packagePage = new PackagePage(addPackageAndConfiurationData);
             packagePage.enterInformationPackage();
 
@@ -67,53 +56,75 @@ public class Main {
 
 
         }
+        for (int i = 1; ; i++) {
+            GeneralPage generalPage = new GeneralPage();
+            ClassName className;
+            StudentData studentData;
+            StudentPage studentPage;
+            Curriculum curriculum;
+            ScheduleData scheduleData;
+            SchedulePage schedule;
+            CurriculumData curriculumData;
+            CurriculumPage curriculumPage;
 
-
-        /*Tạo lớp học L6*/
-        CreateStudentData createStudentData;
-        CreateStudentPage createStudentPage;
-        GeneralPage generalPage = new GeneralPage();
-        ClassName className;
-        StudentData studentData;
-        Curriculum curriculum;
-        ScheduleData scheduleData;
-        SchedulePage schedule;
-        CurriculumData curriculumData;
-        CurriculumPage curriculumPage;
-
-        StudentPage studentPage;
-        for (int i = 0; i < information.length; i++) {
-            createStudentData = new CreateStudentData(information[i][1], information[i][2], information[i][4]);
-            createStudentPage = new CreateStudentPage(createStudentData);
-            createStudentPage.EnterInformation();
-            Product product = new Product(information[i][5], information[i][7]);
-            if (i < information.length - 1) {
-                className = new ClassName(information[i][1], information[i][5], information[i][6], information[i][7], information[i][8], information[i + 1][1], information[i + 1][5], information[i + 1][6], information[i + 1][7], information[i + 1][8]);
-            } else {
-                className = new ClassName(information[i][1], information[i][5], information[i][6], information[i][7], information[i][8], "", "", "", "", "");
+            if (excel.getCell("NAME", i).isEmpty()) {
+                break;
             }
-            GeneralData generalData = new GeneralData(product, className);
+            Product product = new Product(excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i));
+            if (!excel.getCell("NAME", i).isEmpty()) {
+                className = new ClassName(excel.getCell("NAME", i), excel.getCell("CLASS TYPE", i), excel.getCell("SCHEDULE", i), excel.getCell("TEACHER", i), excel.getCell("CURRICULUM", i), excel.getCell("NAME", i + 1), excel.getCell("CLASS TYPE", i + 1), excel.getCell("SCHEDULE", i + 1), excel.getCell("TEACHER", i + 1), excel.getCell("CURRICULUM", i + 1));
+                GeneralData generalData = new GeneralData(product, className);
+                if (!className.getClassName().isEmpty()) {
+                    generalPage.Enterinformation(generalData);
+                    curriculum = new Curriculum(excel.getCell("CURRICULUM", i));
+                    scheduleData = new ScheduleData(curriculum);
+                    schedule = new SchedulePage();
+                    schedule.Enterinformation(scheduleData);
 
-            /*Nếu tên lớp được xác định là có tên tuổi*/
-            if (!className.getClassName().isEmpty()) {
-                generalPage.Enterinformation(generalData);
-                curriculum = new Curriculum(information[i][8]);
-                scheduleData = new ScheduleData(curriculum);
-                schedule = new SchedulePage();
-                schedule.Enterinformation(scheduleData);
-                if (i < information.length - 1) {
-                    studentData = new StudentData(information[i][9], information[i + 1][9]);
-                } else {
-                    studentData = new StudentData(information[i][9], "");
+                    if (!excel.getCell("ID", i + 1).isEmpty()) {
+                        studentData = new StudentData(excel.getCell("IDBOS", i), excel.getCell("IDBOS", i + 1));
+                    } else {
+                        studentData = new StudentData(excel.getCell("IDBOS", i), "");
+                    }
+                    studentPage = new StudentPage();
+                    studentPage.Enterinformation(studentData);
+                    curriculumData = new CurriculumData(excel.getCell("CURRICULUM", i));
+                    curriculumPage = new CurriculumPage(curriculumData);
+                    curriculumPage.Enterinformation();
                 }
-                studentPage = new StudentPage();
-                studentPage.Enterinformation(studentData);
-                curriculumData = new CurriculumData(information[i][8]);
-                curriculumPage = new CurriculumPage(curriculumData);
-                curriculumPage.Enterinformation();
             }
         }
 
-
+//        for (String[] information : information) {
+//
+//            /*Tạo Account ClassIn*/
+//            String idbos = entry.RunCreateStudent(information[1], information[2], information[4]);
+//
+//            /*Nếu như id bos bị trùng TK*/
+//            if (idbos.contains("Trùng TK") || idbos.isEmpty()) {
+//                /*sẽ điền chữ trùng TK vào ô classIn*/
+//                information[3] = idbos;
+//            }
+//
+//            /*Ngược lại nếu như ra id bos, thì sẽ điền zô ô ID BOS*/
+//            else information[9] = idbos;
+//
+//            /*Duyệt vòng lặp để in ra tất cả các thông tin từ idST đến ô id Bos*/
+//            for (int j = 0; j < 10; j++) {
+//                if (j < 9) {
+//                    System.out.print(information[j] + "|");
+//                } else System.out.println(information[j]);
+//            }
+//
+//            /*Add Package and open schedule*/
+//            addPackageAndConfiurationData = new addPackageAndConfiurationData(information[9], information[5], information[7]);
+//            packagePage = new PackagePage(addPackageAndConfiurationData);
+//            packagePage.enterInformationPackage();
+//
+//            configurationPage = new ConfigurationPage(addPackageAndConfiurationData);
+//            configurationPage.OpenTeachAll();
+//
+//
+//        }
     }
 }

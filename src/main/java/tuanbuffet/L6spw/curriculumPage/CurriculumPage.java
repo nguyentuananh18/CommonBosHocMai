@@ -15,8 +15,8 @@ public class CurriculumPage {
         this.curriculumData = curriculumData;
     }
     public void Enterinformation() throws InterruptedException {
-        setText(chon_Giao_Trinh_Input,curriculumData.getCourseName() + Keys.ENTER);
-        setText(chon_Bai_Hoc_Input,curriculumData.getLesson() + Keys.ENTER);
+        enterText(chon_Giao_Trinh_Input,curriculumData.getCourseName() + Keys.ENTER);
+        enterText(chon_Bai_Hoc_Input,curriculumData.getLesson() + Keys.ENTER);
         Thread.sleep(10000);
         clickElement(saveButton);
     }

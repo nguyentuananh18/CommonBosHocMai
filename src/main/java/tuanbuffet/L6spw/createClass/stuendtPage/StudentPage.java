@@ -10,17 +10,15 @@ public class StudentPage {
     private final By addStudentButton = By.xpath("//tbody/tr/td//button[text()='Thêm']");
     private final By saveAndContinueButton = By.xpath("//button[contains(text(),'Lưu Và Tiếp Tục')]");
     private final By courseInformationText = By.xpath("//form//legend[contains(text(),'SPEAKWELL - GV')]");
-    WebUI webUI;
     StudentData studentInformationData;
-    public void setWebUI(WebUI webUI){
-        this.webUI = webUI;
-    }
     public void Enterinformation(StudentData studentData) throws InterruptedException {
         EnterIdBos(studentData.getIdBos1());
         if (checkClassType() ==  2){
             EnterIdBos(studentData.getIdBos2());
         }
         clickElement(saveAndContinueButton);
+
+        /*Nếu Click mà bị Lỗi thì sao???*/
     }
     public void EnterIdBos(String idBos) throws InterruptedException {
         enterText(informationStudentInput,idBos);

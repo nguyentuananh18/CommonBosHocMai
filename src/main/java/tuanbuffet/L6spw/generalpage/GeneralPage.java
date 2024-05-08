@@ -17,15 +17,15 @@ public class GeneralPage {
     public void Enterinformation(GeneralData data) throws InterruptedException {
         openURL("https://spu.bos.hocmai.com/classes/create");
         sleep(2);
-        setText(selectProductInput, data.product.getProductCourseName() + Keys.DOWN + Keys.ENTER);
+        enterText(selectProductInput, data.product.getProductCourseName() + Keys.DOWN + Keys.ENTER);
         sleep(1);
-        setText(nameClassInput, data.className.getClassName() + Keys.DOWN + Keys.ENTER);
+        enterText(nameClassInput, data.className.getClassName() + Keys.DOWN + Keys.ENTER);
         sleep(1);
-        setText(numberStudentInput, "5" + Keys.DOWN + Keys.ENTER);
+        enterText(numberStudentInput, "5" + Keys.DOWN + Keys.ENTER);
         sleep(0.5);
-        setText(typeClassInput, "Chính Thức" + Keys.DOWN + Keys.ENTER);
+        enterText(typeClassInput, "Chính Thức" + Keys.DOWN + Keys.ENTER);
         sleep(0.5);
-        setText(CSKHInput, "(cs) - ( CS Default )" + Keys.DOWN + Keys.ENTER);
+        enterText(CSKHInput, "(cs) - ( CS Default )" + Keys.DOWN + Keys.ENTER);
         sleep(0.5);
         clickElement(submitButton);
         sleep(2);

@@ -13,13 +13,13 @@ public class SchedulePage {
     private final  By scheduleInput = By.xpath("//input[@placeholder=\"Lịch Học\"]");
     private final  By submitCreateButton = By.xpath("//button[contains(text(),'Tạo Và Sang Bước Kế')]");
     public void Enterinformation(ScheduleData data) throws InterruptedException {
-        setText(nameCourseInput,data.getCurriculum()+ Keys.DOWN + Keys.ENTER);
+        enterText(nameCourseInput,data.getCurriculum()+ Keys.DOWN + Keys.ENTER);
         Thread.sleep(500);
-        setText(startDay,"10102025");
+        enterText(startDay,"10102025");
         Thread.sleep(500);
-        setText(numberDurationInput,"1");
+        enterText(numberDurationInput,"1");
         Thread.sleep(500);
-        setText(scheduleInput,"08:25 - 08:55" + Keys.DOWN + Keys.ENTER );
+        enterText(scheduleInput,"08:25 - 08:55" + Keys.DOWN + Keys.ENTER );
         Thread.sleep(500);
         clickElement(submitCreateButton);
         waitForPageLoaded();

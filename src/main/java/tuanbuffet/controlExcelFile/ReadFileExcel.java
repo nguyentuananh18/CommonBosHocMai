@@ -26,12 +26,12 @@ public class ReadFileExcel {
 
             //duyệt tất cả các hàng trong sheet
             Iterator<Row> iterator = datatypeSheet.iterator();
+
             //đến dòng đầu tiên
             Row firstRow = iterator.next();
 
             //đến ô đầu tiên của dòng đầu tiên
             Cell firstCell = firstRow.getCell(0);
-
 
             System.out.println(firstCell.getStringCellValue());
 
@@ -55,8 +55,9 @@ public class ReadFileExcel {
 
 
             //chạy thử xem có đúng data k:)))
-            for (ClassInformation classInformation : listOfClassInformation) {
-                System.out.print("ID: " + classInformation.getIdST());
+            for (/*ClassInformation classInformation : listOfClassInformation*/ int i=0; i<= listOfClassInformation.size() ; i++) {
+                System.out.println(listOfClassInformation.get(i).getIdST());
+                /*System.out.print("ID: " + classInformation.getIdST());
                 System.out.print(" EMAIL: " +classInformation.getEmail());
                 System.out.print(" NAME: " +classInformation.getName());
                 System.out.print(" PHONE: " +classInformation.getPhone());
@@ -64,16 +65,13 @@ public class ReadFileExcel {
                 System.out.print(" TEACHER: " +classInformation.getTeacher());
                 System.out.print(" SCHEDULE: " +classInformation.getSchedule());
                 System.out.print(" CURRICULUM: " +classInformation.getCurriculum());
-                System.out.println(" ID BOS: " +classInformation.getIdBOS());
-                Thread.sleep(30);
+                System.out.println(" ID BOS: " +classInformation.getIdBOS());*/
             }
             workbook.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 }
