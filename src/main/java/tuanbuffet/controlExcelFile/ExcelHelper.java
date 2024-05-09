@@ -42,11 +42,6 @@ public class ExcelHelper {
             this.excelFilePath = ExcelPath;
 
             //adding all the column header names to the map 'columns'
-            Iterator<Row> iterator = sh.iterator();
-            Row firstRow = iterator.next();
-            Cell firstCell = firstRow.getCell(0);
-            System.out.println(firstCell.getStringCellValue());
-
             sh.getRow(0).forEach(cell ->{
                 columns.put(cell.getStringCellValue(), cell.getColumnIndex());
             });

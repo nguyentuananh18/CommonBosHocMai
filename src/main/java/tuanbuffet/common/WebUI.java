@@ -60,8 +60,7 @@ public class WebUI {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(40));
     }
 
-    public static void closeBrowser() throws InterruptedException {
-        Thread.sleep(1000);
+    public static void closeBrowser(){
         driver.quit();
     }
 
@@ -96,6 +95,7 @@ public class WebUI {
     }
 
     public static void hoverOnElement(By by) {
+        waitForPageLoaded();
         waitForElementVisible(by);
         Actions action = new Actions(driver);
         action.moveToElement(getWebElement(by));
@@ -168,6 +168,7 @@ public class WebUI {
     }
 
     public static String getAttributeElement(By by, String attributeName) {
+        waitForPageLoaded();
         waitForElementVisible(by);
         logConsole("Get attribute value of element " + by);
         logConsole("==> Attribute value: " + getWebElement(by).getAttribute(attributeName));
@@ -212,7 +213,7 @@ public class WebUI {
     }
 
     public static void waitForElementVisible(By by) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_PAGE_LEADED_TIMEOUT));
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
@@ -222,7 +223,7 @@ public class WebUI {
     }
 
     public static void waitForElementPresent(By by) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_PAGE_LEADED_TIMEOUT));
         wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
@@ -245,7 +246,7 @@ public class WebUI {
 
     public static boolean verifyElementIsDisplay(By by) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_PAGE_LEADED_TIMEOUT));
             wait.until(ExpectedConditions.visibilityOfElementLocated(by));
             return true;
         } catch (TimeoutException e) {

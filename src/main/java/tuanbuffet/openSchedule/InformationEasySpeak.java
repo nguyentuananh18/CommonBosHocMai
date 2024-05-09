@@ -24,16 +24,12 @@ public class InformationEasySpeak{
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     Scanner sc = new Scanner(System.in);
-    public Date getDateStart() throws ParseException {
-        System.out.println("Nhập ngày bạn muốn chạy : ");
-        return new SimpleDateFormat("dd/MM/yyyy").parse(sc.nextLine());
+    public Date getDateStart(String daystart) throws ParseException {
+        return new SimpleDateFormat("dd/MM/yyyy").parse(daystart);
     }
-    public void run() throws InterruptedException, ParseException {
-        int numberDayRun;
-        calendar.setTime(getDateStart());
-        System.out.println("Điền số ngày bạn cần chạy: ");
-        numberDayRun = sc.nextInt();
-
+    public void runEsOld(String daystart, int numberDayRun) throws InterruptedException, ParseException {
+        calendar.setTime(getDateStart(daystart));
+        openBrowser();
         login("hocmai","Hocmai@1234");
         openURL("https://spu.bos.hocmai.com/setting/class-time");
         clickElement(addNewOrUpdateButton);
@@ -44,6 +40,22 @@ public class InformationEasySpeak{
                 EnterInformationES(productData.productES, dateFormat.format(calendar.getTime()), information[0], information[1], information[2]);
             }
 
+            for (String[] information : productData.ESP24FAMX_EasySpeakForAdultsMix) {
+                System.out.println("Mở ca ngày: " + dateFormat.format(calendar.getTime()) + " " + information[0] + " gói: " + productData.productESMix);
+                EnterInformationES(productData.productESMix, dateFormat.format(calendar.getTime()), information[0], information[1], information[2]);
+            }
+
+            calendar.add(Calendar.DATE,1);
+        }
+    }
+    public void runEsNew(String daystart, int numberDayRun) throws InterruptedException, ParseException {
+        calendar.setTime(getDateStart(daystart));
+        openBrowser();
+        login("hocmai","Hocmai@1234");
+        openURL("https://spu.bos.hocmai.com/setting/class-time");
+        clickElement(addNewOrUpdateButton);
+
+        for (int i = 1; i < numberDayRun ; i++){
             for (String[] information : productData.ESP24FAMX_EasySpeakForAdultsMix) {
                 System.out.println("Mở ca ngày: " + dateFormat.format(calendar.getTime()) + " " + information[0] + " gói: " + productData.productESMix);
                 EnterInformationES(productData.productESMix, dateFormat.format(calendar.getTime()), information[0], information[1], information[2]);

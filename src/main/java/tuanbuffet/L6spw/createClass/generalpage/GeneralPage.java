@@ -14,7 +14,7 @@ public class GeneralPage {
     private By submitButton = By.xpath("//button[contains(text(),'Tiếp Tục')]");
 
     //nhap thong tin
-    public void Enterinformation(GeneralData data) throws InterruptedException {
+    public void Enterinformation(GeneralData data){
         openURL("https://spu.bos.hocmai.com/classes/create");
         sleep(2);
         enterText(selectProductInput, data.product.getProductCourseName() + Keys.DOWN + Keys.ENTER);
