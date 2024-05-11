@@ -154,6 +154,11 @@ public class WebUI {
         /*getWebElement(by).clear();*/
         getWebElement(by).sendKeys(value);
     }
+    public static boolean isSelected(By locator){
+        waitForPageLoaded();
+        waitForElementVisible(locator);
+        return getWebElement(locator).isSelected();
+    }
 
     public static void refreshPageWeb() {
         driver.navigate().refresh();
@@ -206,6 +211,7 @@ public class WebUI {
             throw new RuntimeException(e);
         }
     }
+
 
     public static void waitForElementVisible(By by, int second) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second));

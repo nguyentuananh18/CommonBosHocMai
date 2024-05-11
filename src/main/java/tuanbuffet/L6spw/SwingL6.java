@@ -1,13 +1,9 @@
 package tuanbuffet.L6spw;
 
-import tuanbuffet.common.PassWord;
-import tuanbuffet.openSchedule.InformationEasySpeak;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 
 public class SwingL6 {
 
@@ -31,35 +27,40 @@ public class SwingL6 {
         L6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!checkBoxCreateStudent.isSelected() && !checkBoxAddPackageAndOpenSchedule.isSelected() && !CreateClass.isSelected()){
-                    JOptionPane.showMessageDialog(null,"Đù, không chọn chạy cái nào thì biết chạy cái nào, tick nó đi chớ!!!");
-                }
-                else {
-                    Main main = new Main();
-                    try {
-                        main.Setup();
-                    } catch (InterruptedException ex) {
-                        throw new RuntimeException(ex);
+                try {
+                    if (!checkBoxCreateStudent.isSelected() && !checkBoxAddPackageAndOpenSchedule.isSelected() && !CreateClass.isSelected()) {
+                        JOptionPane.showMessageDialog(null, "Đù, không chọn chạy cái nào thì biết chạy cái nào, tick nó đi chớ!!!");
                     }
-                    if (checkBoxCreateStudent.isSelected()){
-
-                        main.CreateStudent();
-                    }
-                    if (checkBoxAddPackageAndOpenSchedule.isSelected()){
-
-                        main.AddPackageAndOpenSchedule();
-                    }
-                    if (CreateClass.isSelected()){
-
+                    else {
+                        RunL6 runL6 = new RunL6();
                         try {
-                            main.CreateClass();
+                            runL6.Setup();
                         } catch (InterruptedException ex) {
-                            throw new RuntimeException(ex);
+                            runL6.QuitProgram();
+                            showMessageError();
                         }
-                    }
-                    JOptionPane.showMessageDialog(null,"Đã chạy xong!");
-                }
+                        if (checkBoxCreateStudent.isSelected()) {
+                            runL6.CreateStudent();
+                        }
+                        if (checkBoxAddPackageAndOpenSchedule.isSelected()) {
+                            runL6.AddPackageAndOpenSchedule();
+                        }
+                        if (CreateClass.isSelected()) {
 
+                            try {
+                                runL6.CreateClass();
+                            } catch (InterruptedException ex) {
+                                runL6.QuitProgram();
+                                showMessageError();
+                            }
+                        }
+                        runL6.QuitProgram();
+                        JOptionPane.showMessageDialog(null, "Đã chạy xong!");
+                    }
+                }
+                catch (Exception error){
+                    showMessageError();
+                }
             }
         });
         // Thêm các nút vào JPanel
@@ -68,7 +69,7 @@ public class SwingL6 {
 
 
         panel.add(checkBoxCreateStudent, BorderLayout.NORTH);
-        panel.add(checkBoxAddPackageAndOpenSchedule,BorderLayout.CENTER);
+        panel.add(checkBoxAddPackageAndOpenSchedule, BorderLayout.CENTER);
         panel.add(CreateClass);
         panel.add(L6, BorderLayout.SOUTH);
         /*panel.add(new JLabel("phần mềm được bản quyền bởi Nguyễn Tuấn Anh"),BorderLayout.CENTER);*/
@@ -76,5 +77,8 @@ public class SwingL6 {
         frame.add(panel, BorderLayout.CENTER);
         // Hiển thị cửa sổ ứng dụng
         frame.setVisible(true);
+    }
+    public static void showMessageError(){
+        JOptionPane.showMessageDialog(null,"Chương trình đã bị lỗi, vui lòng liên hệ admin!");
     }
 }

@@ -20,12 +20,4 @@ public class CurriculumPage {
         Thread.sleep(10000);
         clickElement(saveButton);
     }
-    public static void main(String[] args) {
-        CurriculumData curriculumData = new CurriculumData("Kid's Box Movers 1");
-        CurriculumPage curriculumPage = new CurriculumPage(curriculumData);
-        System.out.println(curriculumData.getCourseName());
-        System.out.println(curriculumData.getLesson());
-
-    }
-
 }
