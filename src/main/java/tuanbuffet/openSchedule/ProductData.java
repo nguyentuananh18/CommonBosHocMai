@@ -3,7 +3,7 @@ package tuanbuffet.openSchedule;
 public class ProductData {
     String productES = "ESP - EasySpeak";
     String productESMix = "ESP24FAMX - Easy Speak For Adults Mix";
-    String[][] EasySpeak ={
+    String[][] EasySpeak = {
             {"18:00 - 18:30","10","10"},
             {"18:35 - 19:05","10","10"},
             {"19:10 - 19:40","10","10"},
@@ -21,4 +21,7 @@ public class ProductData {
             {"20:55 - 21:25","10","20"},
             {"21:30 - 22:00","10","20"},
     };
+
+
+
 }

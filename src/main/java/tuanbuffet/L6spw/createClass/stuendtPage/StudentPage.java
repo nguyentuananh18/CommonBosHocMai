@@ -10,15 +10,31 @@ public class StudentPage {
     private final By addStudentButton = By.xpath("//tbody/tr/td//button[text()='Thêm']");
     private final By saveAndContinueButton = By.xpath("//button[contains(text(),'Lưu Và Tiếp Tục')]");
     private final By courseInformationText = By.xpath("//form//legend[contains(text(),'SPEAKWELL - GV')]");
-    StudentData studentInformationData;
-    public void Enterinformation(StudentData studentData) throws InterruptedException {
+
+    By notifyMessage = By.xpath("//div[@id='notistack-snackbar']");
+
+    By listStudentAdded = By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr");
+    By errorAddStudentText = By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr[i]/td/span");
+    String addHvSuccess = "Lưu Thành Công";
+    String addHvErrorNotAvailable = "Student không có đủ available sessions";
+    String addHVErrorPackage = "Gói của học viên đã hết hạn";
+    String addTotalSuccess = "Lưu Thành Công";
+    String errorSession = "Student đã tham gia vào một session khác ở thời điểm này";
+
+
+    StudentData studentData;
+    public StudentPage(StudentData studentData){
+        this.studentData = studentData;
+    }
+
+    public boolean Enterinformation() throws InterruptedException {
         EnterIdBos(studentData.getIdBos1());
         if (checkClassType() ==  2){
             EnterIdBos(studentData.getIdBos2());
         }
         clickElement(saveAndContinueButton);
+        return getTextElement(notifyMessage).contains(addTotalSuccess);
 
-        /*Nếu Click mà bị Lỗi thì sao???*/
     }
     public void EnterIdBos(String idBos) throws InterruptedException {
         enterText(informationStudentInput,idBos);

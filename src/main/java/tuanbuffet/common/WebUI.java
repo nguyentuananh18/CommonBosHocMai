@@ -4,25 +4,25 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.text.Normalizer;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 public class WebUI {
-
+    public static ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
+    public static WebDriver getDriver() {
+        return driver.get();
+    }
 
     public static void switchToWindows(int number) {
-        Set<String> windows = driver.getWindowHandles();
+        Set<String> windows = getDriver().getWindowHandles();
         String firstWindow = (String) windows.toArray()[number];
-        driver.switchTo().window(firstWindow);
+        getDriver().switchTo().window(firstWindow);
     }
 
     public static void NewTab() throws AWTException, InterruptedException {
@@ -34,12 +34,13 @@ public class WebUI {
         Thread.sleep(1000);
     }
 
-    public static WebDriver driver;
 
     public static void HideBrowers() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
-        driver = new ChromeDriver(options);
+
+        driver.set(new ChromeDriver(options));
+        /*driver = new ChromeDriver(options);*/
     }
 
     public static void clickPartialLinkText(String content) {
@@ -51,43 +52,51 @@ public class WebUI {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--user-data-dir=C:\\Users\\Nguyen Tuan Anh\\AppData\\Local\\Google\\Chrome\\User Data\\");
         options.addArguments("--profile-directory=Profile " + numbersProfiles);
-        driver = new ChromeDriver(options);
+        driver.set(new ChromeDriver(options));
     }
 
     public static void openBrowser() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(40));
+        ChromeOptions options = new ChromeOptions();
+        driver.set(new ChromeDriver(options));
+        getDriver().manage().window().maximize();
+        getDriver().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(40));
+    }
+    public static void openBrowserSize(int width, int height,int distance) {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--window-position=" +distance +",0" );
+        options.addArguments("--window-size=" + width + "," + height);
+        driver.set(new ChromeDriver(options));
+        getDriver().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(40));
     }
 
     public static void closeBrowser(){
-        driver.quit();
+        getDriver().quit();
     }
 
     public static void AlertDismiss() {
-        driver.switchTo().alert().dismiss();
+        getDriver().switchTo().alert().dismiss();
     }
 
     public static void AlertAccept() {
-        driver.switchTo().alert().accept();
+        getDriver().switchTo().alert().accept();
     }
 
     public static void AlertSendKeys(String text) {
-        driver.switchTo().alert().sendKeys(text);
+        getDriver().switchTo().alert().sendKeys(text);
     }
 
     public static String AlertClick() {
-        return driver.switchTo().alert().getText();
+        return getDriver().switchTo().alert().getText();
     }
 
-    private static int EXPLICIT_WAIT_TIMEOUT = 3;
-    private static int WAIT_PAGE_LEADED_TIMEOUT = 20;
+    private static int EXPLICIT_WAIT_TIMEOUT = 15;
+    private static int WAIT_PAGE_LEADED_TIMEOUT = 30;
 
     public WebUI() {
     }
 
     public static WebElement getWebElement(By by) {
-        return driver.findElement(by);
+        return getDriver().findElement(by);
     }
 
     public static void logConsole(String message) {
@@ -97,7 +106,7 @@ public class WebUI {
     public static void hoverOnElement(By by) {
         waitForPageLoaded();
         waitForElementVisible(by);
-        Actions action = new Actions(driver);
+        Actions action = new Actions(getDriver());
         action.moveToElement(getWebElement(by));
         logConsole("Hover on element " + by);
     }
@@ -114,21 +123,21 @@ public class WebUI {
 
     public static void rightClickElement(By by) {
         waitForElementVisible(by);
-        Actions action = new Actions(driver);
+        Actions action = new Actions(getDriver());
         action.contextClick(getWebElement(by));
         logConsole("Right click on element " + by);
     }
 
     public static void openURL(String URL) {
-        driver.get(URL);
+        getDriver().get(URL);
         waitForPageLoaded();
         logConsole("Open URL: " + URL);
     }
 
     public static String getCurrentUrl() {
         waitForPageLoaded();
-        logConsole("Get Current URL: " + driver.getCurrentUrl());
-        return driver.getCurrentUrl();
+        logConsole("Get Current URL: " + getDriver().getCurrentUrl());
+        return getDriver().getCurrentUrl();
     }
 
     public static void clickElement(By by) {
@@ -144,7 +153,8 @@ public class WebUI {
         waitForPageLoaded();
         waitForElementVisible(by);
         highLightElement(by);
-        getWebElement(by).clear();
+        getWebElement(by).sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        getWebElement(by).sendKeys(Keys.DELETE);
         logConsole("Click on element " + by);
     }
 
@@ -161,7 +171,7 @@ public class WebUI {
     }
 
     public static void refreshPageWeb() {
-        driver.navigate().refresh();
+        getDriver().navigate().refresh();
     }
 
     public static String getTextElement(By by) {
@@ -185,13 +195,13 @@ public class WebUI {
         //Dùng Actions class
         //Robot class
         //Dùng JavascriptExecutor
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].scrollIntoView(true);", getWebElement(by));
         logConsole("Scroll to element " + by);
     }
 
     public static void scrollToElementWithJS(int y) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("window.scrollBy(0, " + y + ")");
     }
 
@@ -214,27 +224,27 @@ public class WebUI {
 
 
     public static void waitForElementVisible(By by, int second) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(second));
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
     public static void waitForElementVisible(By by) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_PAGE_LEADED_TIMEOUT));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
     public static void waitForElementPresent(By by, int second) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(second));
         wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
     public static void waitForElementPresent(By by) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_PAGE_LEADED_TIMEOUT));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
         wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
     public static void waitForElementClickable(By by, int second) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(second));
 
         wait.until(ExpectedConditions.elementToBeClickable(by));
     }
@@ -242,7 +252,7 @@ public class WebUI {
     public static boolean verifyElementIsDisplay(By by, int second) {
         waitForPageLoaded();
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second));
+            WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(second));
             wait.until(ExpectedConditions.visibilityOfElementLocated(by));
             return true;
         } catch (TimeoutException e) {
@@ -252,7 +262,7 @@ public class WebUI {
 
     public static boolean verifyElementIsDisplay(By by) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_PAGE_LEADED_TIMEOUT));
+            WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
             wait.until(ExpectedConditions.visibilityOfElementLocated(by));
             return true;
         } catch (TimeoutException e) {
@@ -261,12 +271,14 @@ public class WebUI {
     }
 
     public static int listElements(By by) {
-        List<WebElement> listElement = driver.findElements(by);
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        List<WebElement> listElement = getDriver().findElements(by);
         return listElement.size();
     }
 
     public static Boolean checkElementExist(String xpath) {
-        List<WebElement> listElement = driver.findElements(By.xpath(xpath));
+        List<WebElement> listElement = getDriver().findElements(By.xpath(xpath));
 
         if (!listElement.isEmpty()) {
             System.out.println("Element " + xpath + " existing.");
@@ -278,7 +290,7 @@ public class WebUI {
     }
 
     public static String getTextElement(String xpath) {
-        return driver.findElement(By.xpath(xpath)).getText();
+        return getDriver().findElement(By.xpath(xpath)).getText();
     }
 
     /**
@@ -301,7 +313,7 @@ public class WebUI {
     }*/
     public static void waitForPageLoaded() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_PAGE_LEADED_TIMEOUT));
+            WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(WAIT_PAGE_LEADED_TIMEOUT));
             wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
         } catch (Exception e) {
             System.out.println("Error waiting for page to load: " + e.getMessage());
@@ -309,8 +321,8 @@ public class WebUI {
     }
 
     public static void clickElementJS(By by) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        WebElement button = driver.findElement(by);
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement button = getDriver().findElement(by);
         js.executeScript("arguments[0].click();", button);
     }
 

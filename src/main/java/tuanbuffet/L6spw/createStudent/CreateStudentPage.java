@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
 import static tuanbuffet.common.WebUI.*;
-
+import static tuanbuffet.L6spw.commonL6.BybyCommon.*;
 public class CreateStudentPage {
     private String URL = "https://spu.bos.hocmai.com/students/create";
 
@@ -42,7 +42,8 @@ public class CreateStudentPage {
         enterText(mailInput, createStudentData.getMail());
         enterText(birthDayInput, "01/01/2024");
         clickElement(representativeButton);
-        enterText(CKSHInput, "(cs) - ( CS Default )" + Keys.DOWN + Keys.ENTER);
+        enterText(CKSHInput, "(cs) - ( CS Default )");
+        clickElement(firstOption);
         clickElement(codeClassInButton);
         sleep(0.5);
         enterText(codeClassInInput, Keys.CLEAR + getAreaCode() + Keys.DOWN + Keys.ENTER);
@@ -52,11 +53,11 @@ public class CreateStudentPage {
     public String getPhoneAfterEditing() {
         String lastPhone = "";
         switch (getAreaCode()) {
-            case "+81 Japan", "+82 Korea, Republic of South Korea", "+33 France": {
+            case "+81 Japan", "+82 Korea, Republic of South Korea", "+33 France","+49 Germany": {
                 lastPhone = createStudentData.getPhone().substring(2);
             }
             break;
-            case "+420 Czech Republic": {
+            case "+420 Czech Republic","+886 Taiwan": {
                 lastPhone = createStudentData.getPhone().substring(3);
             }
             break;
@@ -84,9 +85,15 @@ public class CreateStudentPage {
                 areaCode = "+82 Korea, Republic of South Korea";
             } else if (createStudentData.getPhone().startsWith("420")) {
                 areaCode = "+420 Czech Republic";
-            } else if (createStudentData.getPhone().startsWith("33")) {
+            } else if (createStudentData.getPhone().startsWith("886")){
+                areaCode ="+886 Taiwan";
+            }
+            else if (createStudentData.getPhone().startsWith("33")) {
                 areaCode = "+33 France";
-            } else areaCode = "+84 Vietnam";
+            } else if (createStudentData.getPhone().startsWith("49")){
+                areaCode = "+49 Germany";
+            }
+            else areaCode = "+84 Vietnam";
         } else {
             areaCode = "+84 Vietnam";
         }

@@ -1,6 +1,7 @@
 package tuanbuffet.common;
 
 import org.openqa.selenium.By;
+
 import static tuanbuffet.common.WebUI.*;
 
 public class PassWord {
@@ -13,7 +14,14 @@ public class PassWord {
         openURL(url);
         enterText(TextInput, "NTA");
         clickElement(submitButton);
-        String pass = getAttributeElement(TextOutPut,"value").substring(5);
+        String pass;
+        try {
+            pass = getAttributeElement(TextOutPut,"value").substring(5);
+        }
+        catch (Exception e){
+            pass = getAttributeElement(TextOutPut,"value").substring(5);
+        }
+
         closeBrowser();
         return pass;
 

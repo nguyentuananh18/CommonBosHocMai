@@ -1,7 +1,7 @@
 package tuanbuffet.L6spw.addPackage;
 
 
-import tuanbuffet.common.ListTeacherName;
+import tuanbuffet.L6spw.commonL6.ListTeacherName;
 
 public class addPackageAndConfiurationData {
     private String idBos;

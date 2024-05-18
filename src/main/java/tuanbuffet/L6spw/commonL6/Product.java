@@ -1,7 +1,5 @@
 package tuanbuffet.L6spw.commonL6;
 
-import tuanbuffet.common.ListTeacherName;
-
 public class Product {
     ListTeacherName listTeacherName = new ListTeacherName();
     /*public ClassType classType;
@@ -60,7 +58,7 @@ public class Product {
     }
     public boolean checkTeacherType(String[] teacherType) {
         for (String teacher : teacherType) {
-            if (teacher.contains(getTeacherName().trim()) || getTeacherName().contains(teacher.trim())) {
+            if (teacher.trim().equals(getTeacherName().trim())) {
                 status = true;
                 break;
             }

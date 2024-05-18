@@ -1,12 +1,10 @@
 package tuanbuffet.openSchedule;
 
-import tuanbuffet.common.PassWord;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
+import java.time.LocalDate;
 
 public class SwingOpenSchedule {
 
@@ -14,130 +12,116 @@ public class SwingOpenSchedule {
         // Tạo một JFrame (cửa sổ ứng dụng)
         JFrame frame = new JFrame("Auto BOS Học Mãi !");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(258, 300);
+        frame.setSize(400, 450);
         frame.setLocationRelativeTo(null);
-
         JTextField DayofStart = new JTextField(15);
-        JTextField numberDay = new JTextField(15);
-
+        JTextField JText_numberDay = new JTextField(15);
+        JTextField thread = new JTextField(15);
         JCheckBox checkBoxEsOld = new JCheckBox();
         checkBoxEsOld.setText("ESP - EasySpeak");
         JCheckBox checkBoxEsNew = new JCheckBox();
         checkBoxEsNew.setText("ESP24FAMX - Easy Speak For Adults Mix");
+        JButton openButton = new JButton("Run");
 
-        JButton OpenSchedule = new JButton("Run");
-        OpenSchedule.addActionListener(new ActionListener() {
+        LocalDate givenDate = LocalDate.of(2024, 6, 10);
+        LocalDate currentDate = LocalDate.now();
+        boolean isFuture = givenDate.isAfter(currentDate);
+        openButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                // Xử lý sự kiện khi nút được nhấn
+                if (isFuture) {
+                    // Xử lý sự kiện khi nút được nhấn
+                    if (!checkBoxEsOld.isSelected() && !checkBoxEsNew.isSelected()) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng tick 1 trong 2 lựa chọn trên trước khi chạy!");
+                    } else {
+                        if (DayofStart.getText().isEmpty() || JText_numberDay.getText().isEmpty() || thread.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Điền đủ 3 trường input trước khi chạy!");
+                        } else {
+                            int numberThread = Integer.parseInt(thread.getText());
+                            int numberDay = Integer.parseInt(JText_numberDay.getText());
 
-                if (!checkBoxEsOld.isSelected() && !checkBoxEsNew.isSelected()){
-                    JOptionPane.showMessageDialog(null, "Đù má, không tick vào checkbox kia thì chạy kiểu gì:)))");
-                }
-                else {
-                    if (DayofStart.getText().isEmpty() ||  numberDay.getText().isEmpty()){
-                        JOptionPane.showMessageDialog(null,"Điền đủ 2 ô input kia tao mới chạy được chớ:)))");
-                    }
-                    else {
-                        if (checkBoxEsOld.isSelected() && !checkBoxEsNew.isSelected()) {
-                            PassWord passWord = new PassWord();
-                            String passWeb = passWord.CheckPassWord();
-                            String passOutput = JOptionPane.showInputDialog(null, "Nhập mật khẩu:");
-                            for (int i = 0; i <= 2; i++) {
-                                if (i == 2) {
-                                    JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá 3 lần!!!");
-                                }
-                                if (passWeb.equals(passOutput)) {
-                                    InformationEasySpeak informationEasySpeak = new InformationEasySpeak();
+                            //Trường hợp chỉ tick checkbox chạy ES old
+                            if (checkBoxEsOld.isSelected() && !checkBoxEsNew.isSelected()) {
+                                System.out.println("Chạy cũ");
+                                for (int i = 0; i < numberThread; i++) {
+                                    Thread thread = new Thread(new InformationEasySpeak(i, numberThread, numberDay, DayofStart.getText(), "Old", i * 240));
                                     try {
-                                        informationEasySpeak.runEsOld(DayofStart.getText(), Integer.parseInt(numberDay.getText()));
-                                        JOptionPane.showMessageDialog(null, "Đã chạy xong!");
+                                        thread.start();
+                                        Thread.sleep(500);
                                     } catch (Exception ex) {
-                                        JOptionPane.showMessageDialog(null, "Đù má, điền đúng trường dữ liệu giúp tôi, huhu:)))");
+                                        JOptionPane.showMessageDialog(null, "Điền đúng trường dữ liệu trước khi chạy");
                                     }
-
-                                    break;
-                                } else {
-                                    passWeb = passWord.CheckPassWord();
-                                    passOutput = JOptionPane.showInputDialog(null, "Mật khẩu không đúng, vui lòng nhập lại:");
                                 }
                             }
 
-                        }
-                        else if (!checkBoxEsOld.isSelected() && checkBoxEsNew.isSelected()) {
-
-
-                            PassWord passWord = new PassWord();
-                            String passWeb = passWord.CheckPassWord();
-                            String passOutput = JOptionPane.showInputDialog(null, "Nhập mật khẩu:");
-                            for (int i = 0; i <= 2; i++) {
-                                if (i == 2) {
-                                    JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá 3 lần!!!");
-                                }
-                                if (passWeb.equals(passOutput)) {
-
-                                    InformationEasySpeak informationEasySpeak = new InformationEasySpeak();
+                            //Trường hợp chỉ tick checkbox chạy ES new
+                            else if (!checkBoxEsOld.isSelected() && checkBoxEsNew.isSelected()) {
+                                System.out.println("Chạy mới");
+                                for (int i = 0; i < numberThread; i++) {
+                                    Thread thread = new Thread(new InformationEasySpeak(i, numberThread, numberDay, DayofStart.getText(), "New", i * 240));
                                     try {
-                                        informationEasySpeak.runEsNew(DayofStart.getText(), Integer.parseInt(numberDay.getText()));
-                                        JOptionPane.showMessageDialog(null, "Đã chạy xong!");
-                                    }catch (Exception ex) {
-                                    JOptionPane.showMessageDialog(null, "Đù má, điền đúng trường dữ liệu giúp tôi, huhu:)))");
-                                }
-                                    break;
-                                } else {
-                                    passWeb = passWord.CheckPassWord();
-                                    passOutput = JOptionPane.showInputDialog(null, "Mật khẩu không đúng, vui lòng nhập lại:");
-                                }
-                            }
-
-
-                        }
-                        else {
-                            PassWord passWord = new PassWord();
-                            String passWeb = passWord.CheckPassWord();
-                            String passOutput = JOptionPane.showInputDialog(null, "Nhập mật khẩu:");
-                            for (int i = 0; i <= 2; i++) {
-                                if (passWeb.equals(passOutput)) {
-                                    InformationEasySpeak informationEasySpeak = new InformationEasySpeak();
-                                    try {
-                                        informationEasySpeak.runEsOld(DayofStart.getText(), Integer.parseInt(numberDay.getText()));
-                                        informationEasySpeak.runEsNew(DayofStart.getText(), Integer.parseInt(numberDay.getText()));
+                                        thread.start();
+                                        Thread.sleep(500);
                                     } catch (Exception ex) {
-                                        JOptionPane.showMessageDialog(null, "Đù má, điền đúng trường dữ liệu giúp tôi, huhu:)))");
+                                        JOptionPane.showMessageDialog(null, "Điền đúng trường dữ liệu trước khi chạy");
                                     }
-                                    JOptionPane.showMessageDialog(null, "Đã chạy xong!");
-                                    break;
-                                } else {
-                                    if (i == 2) {
-                                        JOptionPane.showMessageDialog(null, "Bạn đã nhập sai quá 3 lần!!!");
-                                    } else {
-                                        passWeb = passWord.CheckPassWord();
-                                        passOutput = JOptionPane.showInputDialog(null, "Mật khẩu không đúng, vui lòng nhập lại:");
+                                }
+
+                            }
+                            //Trường hợp chỉ tick cả 2 checkbox old và new
+                            else {
+                                System.out.println("Chạy cả");
+                                for (int i = 0; i < numberThread; i++) {
+                                    Thread thread = new Thread(new InformationEasySpeak(i, numberThread, numberDay, DayofStart.getText(), "All", i * 240));
+                                    try {
+                                        thread.start();
+                                        Thread.sleep(500);
+                                    } catch (Exception ex) {
+                                        JOptionPane.showMessageDialog(null, "Điền đúng trường dữ liệu trước khi chạy");
                                     }
                                 }
                             }
-
                         }
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Chương trình đã bị lỗi, vui lòng liên hệ admin!");
                 }
-
             }
         });
+        //panel startDay
+        JPanel Jpanel_Option = new JPanel();
+        Jpanel_Option.setLayout(new GridLayout(3, 1));
+        Jpanel_Option.add(checkBoxEsOld, BorderLayout.NORTH);
+        Jpanel_Option.add(checkBoxEsNew, BorderLayout.CENTER);
+
+        JPanel JPanel_Config = new JPanel();
+        JPanel_Config.setLayout(new GridLayout(3, 2));
+        JPanel_Config.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 65));
+        JPanel_Config.add(new JLabel("Ngày bắt đầu dd/MM/yyyy: "));
+        JPanel_Config.add(DayofStart);
+        JPanel_Config.add(new JLabel("Số ngày chạy: "));
+        JPanel_Config.add(JText_numberDay);
+        JPanel_Config.add(new JLabel("Số luồng chạy (max = 7): "));
+        JPanel_Config.add(thread);
+
+        JPanel JPanel_Run = new JPanel();
+        JPanel_Run.setLayout(new GridLayout(1, 1));
+        JPanel_Run.setBorder(BorderFactory.createEmptyBorder(50, 150, 0, 150));
+        JPanel_Run.add(openButton);
+
+        JPanel JPanel_bottom = new JPanel();
+        JPanel_bottom.setLayout(new FlowLayout());
+        JPanel_bottom.add(new JLabel("The software is designed by Tuan Anh"));
+        JPanel_bottom.setBorder(BorderFactory.createEmptyBorder(35, 5, 10, 5));
         // Thêm các nút vào JPanel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(10, 2)); // Hai dòng, một cột
+        panel.setLayout(new GridLayout(4, 1)); // Hai dòng, một cột
+        panel.add(Jpanel_Option);
+        panel.add(JPanel_Config);
+        panel.add(JPanel_Run);
+        panel.add(JPanel_bottom);
+        frame.setLayout(new GridLayout(1, 2));
 
-        panel.add(checkBoxEsOld, BorderLayout.NORTH);
-        panel.add(checkBoxEsNew, BorderLayout.CENTER);
-        panel.add(new JLabel("Ngày bắt đầu dd/MM/yyyy: "));
-        panel.add(DayofStart);
-        panel.add(new JLabel("Số ngày chạy: "));
-        panel.add(numberDay);
-        panel.add(OpenSchedule, BorderLayout.SOUTH);
-        panel.add(new JLabel("The software is copyrighted by TuanBuffet"), BorderLayout.CENTER);
-        ////
-        frame.setLayout(new GridLayout(1,2));
-        // Thêm JPanel vào JFrame
         frame.add(panel);
         // Hiển thị cửa sổ ứng dụng
         frame.setVisible(true);

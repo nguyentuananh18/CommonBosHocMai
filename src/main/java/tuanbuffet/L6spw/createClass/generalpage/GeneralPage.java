@@ -3,9 +3,12 @@ package tuanbuffet.L6spw.createClass.generalpage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
+
 import static tuanbuffet.common.WebUI.*;
+import static tuanbuffet.L6spw.commonL6.BybyCommon.*;
 
 public class GeneralPage {
+    private By selectGroupProducInput = By.xpath("//input[@placeholder=\"Chọn Nhóm Sản Phẩm\"]");
     private By selectProductInput = By.xpath("//input[@placeholder=\"Chọn Sản Phẩm\"]");
     private By nameClassInput = By.xpath("//input[@placeholder=\"Nhập Tên Lớp\"]");
     private By numberStudentInput = By.xpath("//input[@placeholder=\"Chọn Số Lượng Tối Đa Học Viên\"]");
@@ -13,21 +16,36 @@ public class GeneralPage {
     private By CSKHInput = By.xpath("//input[@placeholder=\"Chọn CKSH\"]");
     private By submitButton = By.xpath("//button[contains(text(),'Tiếp Tục')]");
 
+    GeneralData generalData;
+    public GeneralPage(){
+
+    }
+    public GeneralPage(GeneralData generalData){
+        this.generalData = generalData;
+    }
+
     //nhap thong tin
-    public void Enterinformation(GeneralData data){
+    public void Enterinformation(){
         openURL("https://spu.bos.hocmai.com/classes/create");
-        sleep(2);
-        enterText(selectProductInput, data.product.getProductCourseName() + Keys.DOWN + Keys.ENTER);
-        sleep(1);
-        enterText(nameClassInput, data.className.getClassName() + Keys.DOWN + Keys.ENTER);
-        sleep(1);
-        enterText(numberStudentInput, "5" + Keys.DOWN + Keys.ENTER);
+        String productName = generalData.product.getProductCourseName();
+        enterText(selectGroupProducInput,productName);
         sleep(0.5);
-        enterText(typeClassInput, "Chính Thức" + Keys.DOWN + Keys.ENTER);
+        clickElement(firstOption);
+        enterText(selectProductInput,productName);
+        System.out.println(generalData.product.getProductCourseName());
+        clickElement(firstOption);
+        enterText(nameClassInput, generalData.className.getClassName());
         sleep(0.5);
-        enterText(CSKHInput, "(cs) - ( CS Default )" + Keys.DOWN + Keys.ENTER);
+        enterText(numberStudentInput, "5");
         sleep(0.5);
+        enterText(typeClassInput, "Chính Thức");
+        sleep(0.5);
+        clickElement(firstOption);
+        enterText(CSKHInput, "(cs) - ( CS Default )");
+        sleep(0.5);
+        clickElement(firstOption);
+
         clickElement(submitButton);
-        sleep(2);
+        sleep(1);
     }
 }

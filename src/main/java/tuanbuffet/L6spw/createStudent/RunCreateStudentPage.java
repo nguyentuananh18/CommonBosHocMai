@@ -19,11 +19,13 @@ public class RunCreateStudentPage {
             if (exception.getTextNotify().contains(success)) {
                 //Giải quyết xong phần id bos
                 idBos = searchStudentPage.getInformationIdBos();
-            } else if (exception.getTextNotify().contains(messageClassIn) || exception.getTextNotify().contains(phoneAndName)) {
+            }
+            else if (exception.getTextNotify().contains(messageClassIn) || exception.getTextNotify().contains(phoneAndName)) {
                 idBos = searchStudentPage.getInformationIdBosExist();
 
                 //Thông báo mail đã tồn tại
-            } else if (exception.getTextNotify().contains(messageMailExist)) {
+            }
+            else if (exception.getTextNotify().contains(messageMailExist)) {
                     /*for (int j = 1 ; j<10; j++){
                         data.setMail(data.getPhone() + "@SpeakWell.com" + i);
 
@@ -50,9 +52,7 @@ public class RunCreateStudentPage {
 
 
                         //Thông báo phone classin đã dược đăng kí trước đó
-                    } else if (exception.getTextNotify().contains(messageClassIn)
-                            ||
-                            exception.getTextNotify().contains(phoneAndName)) {
+                    } else if (exception.getTextNotify().contains(messageClassIn) || exception.getTextNotify().contains(phoneAndName)) {
 
                         idBos = searchStudentPage.getInformationIdBosExist();
                         break;

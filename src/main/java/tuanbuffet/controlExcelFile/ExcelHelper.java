@@ -129,14 +129,11 @@ public class ExcelHelper {
                 cell = row.createCell(columns.get(columnName));
             }
             cell.setCellValue(text);
-
             XSSFCellStyle style = (XSSFCellStyle) wb.createCellStyle();
             style.setFillPattern(FillPatternType.NO_FILL);
             style.setAlignment(HorizontalAlignment.CENTER);
             style.setVerticalAlignment(VerticalAlignment.CENTER);
-
             cell.setCellStyle(style);
-
             fileOut = new FileOutputStream(excelFilePath);
             wb.write(fileOut);
             fileOut.flush();
@@ -145,16 +142,4 @@ public class ExcelHelper {
             e.getMessage();
         }
     }
-    public static void main(String []args) throws Exception {
-        ExcelHelper excel = new ExcelHelper();
-        excel.setExcelFile("./L6SpeakWell.xlsx", "Sheet1");
-        //Ghi giá trị "pass" vào dòng 1 cột 3 (dòng và cột bắt đầu tính từ 0)
-        excel.setCell("pass", 3, 1);
-        System.out.println(excel.getCell("ID", 1));
-        System.out.println(excel.getCell(2, 1));
-        System.out.println(excel.getCell(3, 1));
-        excel.setCell("Tuanbuffet",5,10);
-        System.out.println(excel.getCell(5,10));
-    }
-
 }
