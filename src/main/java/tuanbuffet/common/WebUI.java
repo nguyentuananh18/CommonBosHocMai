@@ -7,8 +7,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
@@ -23,15 +21,6 @@ public class WebUI {
         Set<String> windows = getDriver().getWindowHandles();
         String firstWindow = (String) windows.toArray()[number];
         getDriver().switchTo().window(firstWindow);
-    }
-
-    public static void NewTab() throws AWTException, InterruptedException {
-        Robot robot = new Robot();
-        robot.keyPress(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_T);
-        robot.keyRelease(KeyEvent.VK_CONTROL);
-        robot.keyRelease(KeyEvent.VK_T);
-        Thread.sleep(1000);
     }
 
 
@@ -67,6 +56,12 @@ public class WebUI {
         options.addArguments("--window-size=" + width + "," + height);
         driver.set(new ChromeDriver(options));
         getDriver().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(40));
+    }
+    public static void closeWindow(){
+        getDriver().close();
+    }
+    public static void newWindow(){
+        getDriver().switchTo().newWindow(WindowType.TAB);
     }
 
     public static void closeBrowser(){

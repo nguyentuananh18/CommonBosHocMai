@@ -28,54 +28,63 @@ public class DeleteStudentLeavePage {
 
 
     StudentLeaveData studentLeaveData;
-    public DeleteStudentLeavePage(StudentLeaveData studentLeaveData){
+
+    public DeleteStudentLeavePage(StudentLeaveData studentLeaveData) {
         this.studentLeaveData = studentLeaveData;
     }
-    public boolean SearchByClass(){
+
+    public boolean SearchByClass() {
+        sleep(1);
         openURL(URL);
-        enterText(searchClassInput,studentLeaveData.getStudentName());
-        enterText(selectClassStatusInput,"Đang học");
+        enterText(searchClassInput, studentLeaveData.getStudentName());
+        enterText(selectClassStatusInput, "Đang học");
         clickElement(firstOption);
-        enterText(selectClassTypeInput,"Chính Thức");
+        enterText(selectClassTypeInput, "Chính Thức");
         clickElement(firstOption);
-        enterText(searchTeacherInput,studentLeaveData.getTeacher());
+        enterText(searchTeacherInput, studentLeaveData.getTeacher());
         enterText(searchStudentInput, studentLeaveData.getStudentID());
         clickElement(searchButton);
+        waitForPageLoaded();
         return verifyElementIsDisplay(foundClass);
     }
-    public void PerformDelete(){
+
+    public void PerformDelete() {
     }
-    public void SelectClass(){
-            int numberClass = listElements(By.xpath("//tbody/tr"));
-            for (int i = 1 ; i<= numberClass ;  i++){
-                clickElement(By.xpath("//tbody/tr[" + i + "]"));
-                switchToWindows(1);
-                clickElement(scheduleStudyButton);
-                enterText(selectStatusClassInput,"Chưa Học");
-                clickElement(firstOption);
-                clickElement(searchScheduleButton);
-                if (getTextElement(foundSchedule).contains("SPU")){
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    Date date = new Date();
-                    String NowDay = String.valueOf(formatter.format(date));
 
-                    for (int j = 1 ; j<listElements(By.xpath("//tbody/tr/td[1]/span")); j++){
-                        //Nếu ngày trên lịch trùng với ngày hiện tại
-                        if (getTextElement("//tbody/tr["+j+"]/td[11]/div/p[1]").equals(NowDay)){
+    public void SelectClass() {
+        int numberClass = listElements(By.xpath("//tbody/tr"));
+        for (int i = 1; i <= numberClass; i++) {
+            clickElement(By.xpath("//tbody/tr[" + i + "]"));
+            switchToWindows(1);
+            clickElement(scheduleStudyButton);
+            enterText(selectStatusClassInput, "Chưa Học");
+            clickElement(firstOption);
+            clickElement(searchScheduleButton);
+            CancelClass();
+            closeWindow();
+            switchToWindows(0);
+        }
+    }
+    public void CancelClass(){
+        if (getTextElement(foundSchedule).contains("SPU")) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = new Date();
+            String NowDay = String.valueOf(formatter.format(date));
+            for (int j = 1; j < listElements(By.xpath("//tbody/tr/td[1]/span")); j++) {
+                //Nếu ngày trên lịch trùng với ngày hiện tại
+                if (getTextElement("//tbody/tr[" + j + "]/td[11]/div/p[1]").equals(NowDay)) {
 
-                            //Nếu như lịch ca học giống nhau nữa nhé:)))
+                    //Nếu như lịch ca học giống nhau nữa nhé:)))
 
-                            clickElement(By.xpath("//tbody/tr["+j+"]/td[1]/span"));
-                            clickElement(cancelClassButton);
-                            enterText(reasonInput,"Học viên");
-                            clickElement(firstOption);
-                            enterText(reasonDetailInput, studentLeaveData.getReason());
-                            clickElement(firstOption);
-
-                            j=1;
-                        }
-                    }
+                    clickElement(By.xpath("//tbody/tr[" + j + "]/td[1]/span"));
+                    clickElement(cancelClassButton);
+                    enterText(reasonInput, "Học viên");
+                    clickElement(firstOption);
+                    enterText(reasonDetailInput, studentLeaveData.getReason());
+                    clickElement(firstOption);
+                    j = 1;
                 }
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 package tuanbuffet.L6spw.addPackage;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import tuanbuffet.L6spw.commonL6.Product;
 
 import static tuanbuffet.common.WebUI.*;
@@ -16,13 +15,14 @@ public class PackagePage {
     By firstOption = By.xpath("//*[contains(@id,'-option-0')]");
     By notifyMessageText = By.xpath("//div[@id='notistack-snackbar']");
 
-    addPackageAndConfiurationData packageData;
+    PackageAndConfiurationData packageData;
+    Product product;
 
-    public PackagePage(addPackageAndConfiurationData packageData) {
+    public PackagePage(PackageAndConfiurationData packageData) {
         this.packageData = packageData;
     }
     public boolean enterInformationPackage() {
-        Product product = new Product(packageData.getClassType(), packageData.getTeacher());
+        product = new Product(packageData.getClassType(), packageData.getTeacher());
         openURL(URl + packageData.getIdBos().substring(2) + "/package");
         String productName = product.getProductCourseName();
         System.out.println(productName);

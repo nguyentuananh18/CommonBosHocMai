@@ -28,6 +28,6 @@ public class CurriculumPage {
         numberLesson -= 1;
         clickElement(By.xpath("//*[contains(@id,'-option-" + numberLesson + "')]"));
         clickElement(saveButton);
-
+        getTextElement(notifyMessage);
     }
 }

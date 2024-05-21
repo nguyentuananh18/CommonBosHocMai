@@ -12,13 +12,13 @@ public class Login extends WebUI {
     private static final By loginButton = By.xpath("//button[contains(text(),'Login')]");
     private final By notificationTextFail = By.xpath("//form/p");
     private static final By titlePageText = By.xpath("//h4[text()='Tổng Quan']");
-    Scanner sc = new Scanner(System.in);
 
     public static boolean login(String username, String password) throws InterruptedException {
         openURL(URL);
         enterText(accountInput, username);
         enterText(passwordInput, password);
         clickElement(loginButton);
+        sleep(2);
         return verifyElementIsDisplay(titlePageText);
     }
 }

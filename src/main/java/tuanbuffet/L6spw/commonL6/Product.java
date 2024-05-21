@@ -54,7 +54,7 @@ public class Product {
             return "1:1";
         } else if (getClassType().contains("1:2")) {
             return "1:2";
-        } else return "1:3";
+        } else return "1:8";
     }
     public boolean checkTeacherType(String[] teacherType) {
         for (String teacher : teacherType) {
@@ -70,27 +70,28 @@ public class Product {
         if (checkClassType().equals("1:1")) {
             if (checkTeacherType(listTeacherName.teacherVietNam)) {
                 return "SPEAKWELL - GV Việt Nam 1:1";
-            } else if (checkTeacherType(listTeacherName.teacherPhilippines)) {
-                return "SPEAKWELL - GV Philippines 1:1";
+            } else if (checkTeacherType(listTeacherName.TeacherUSUK)) {
+                return "SPEAKWELL - GV US/UK 1:1";
             } else if (checkTeacherType(listTeacherName.teacherNamPhi)) {
                 return "SPEAKWELL - GV Nam Phi 1:1";
-            } else return "SPEAKWELL - GV US/UK 1:1";
+            } else return "SPEAKWELL - GV Philippines 1:1";
         } else if (checkClassType().equals("1:2")) {
             if (checkTeacherType(listTeacherName.teacherVietNam)) {
                 return "SPEAKWELL - GV Việt Nam 1:2";
-            } else if (checkTeacherType(listTeacherName.teacherPhilippines)) {
-                return "SPEAKWELL - GV Philippines 1:2";
+            } else if (checkTeacherType(listTeacherName.TeacherUSUK)) {
+                return "SPEAKWELL - GV US/UK 1:2";
             } else if (checkTeacherType(listTeacherName.teacherNamPhi)) {
                 return "SPEAKWELL - GV Nam Phi 1:2";
-            } else return "SPEAKWELL - GV US/UK 1:2";
+            } else return "SPEAKWELL - GV Philippines 1:2";
+
         } else {
             if (checkTeacherType(listTeacherName.teacherVietNam)) {
                 return "SPEAKWELL - GV Việt Nam 1:3";
-            } else if (checkTeacherType(listTeacherName.teacherPhilippines)) {
-                return "SPEAKWELL - GV Philippines 1:3";
+            } else if (checkTeacherType(listTeacherName.TeacherUSUK)) {
+                return "SPEAKWELL - GV US/UK 1:3";
             } else if (checkTeacherType(listTeacherName.teacherNamPhi)) {
                 return "SPEAKWELL - GV Nam Phi 1:3";
-            } else return "SPEAKWELL - GV US/UK 1:3";
+            } else return "SPEAKWELL - GV Philippines 1:3";
         }
     }
 }

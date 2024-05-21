@@ -12,16 +12,16 @@ public class ConfigurationPage {
     By teachAllButton = By.xpath("//p[contains(.,'Dạy Tất Cả')]/following-sibling::span");
     By saveButton = By.xpath("//button[contains(text(),'Lưu Lại')]");
     By notifyMessageText = By.xpath("//div[@id='notistack-snackbar']");
-    addPackageAndConfiurationData data;
-    public ConfigurationPage(addPackageAndConfiurationData data){
-        this.data = data;
+    PackageAndConfiurationData confiurationData;
+    public ConfigurationPage(PackageAndConfiurationData confiurationData){
+        this.confiurationData = confiurationData;
     }
     public  boolean OpenTeachAll(){
-        if (data.getIdBos().isEmpty()){
+        if (confiurationData.getIdBos().isEmpty()){
             return false;
         }
         else {
-            openURL(URL + data.getIdBos().substring(2) + "/configuration");
+            openURL(URL + confiurationData.getIdBos().substring(2) + "/configuration");
             waitForElementVisible(contentPage);
             clickElement(teachAllButton);
             sleep(1);

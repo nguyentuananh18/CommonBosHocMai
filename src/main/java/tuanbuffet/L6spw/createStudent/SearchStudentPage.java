@@ -12,21 +12,20 @@ public class SearchStudentPage {
     By listStudentData = By.xpath("//tbody/tr");
 
 
-
-    CreateStudentData studentData;
+    CreateStudentData createStudentData;
 
     public SearchStudentPage(CreateStudentData data) {
-        this.studentData = data;
+        this.createStudentData = data;
     }
 
     public String getInformationIdBos() {
-        enterText(searchInput, studentData.getPhone());
+        enterText(searchInput, createStudentData.getPhone());
         clickElement(searchButton);
         String idBos = "TK success";
         for (int i = 1; i <= listElements(listStudentData); i++) {
             String classInOnWeb = getTextElement(By.xpath("//tbody/tr[" + i + "]/td[4]"));
             String idBosOnWeb = getTextElement("//tbody/tr[" + i + "]/td[1]");
-            if (classInOnWeb.contains(studentData.getPhone())) {
+            if (classInOnWeb.contains(createStudentData.getPhone())) {
                 idBos = idBosOnWeb;
                 break;
             } else if (i == listElements(listStudentData)) {
@@ -38,20 +37,28 @@ public class SearchStudentPage {
 
     public String getInformationIdBosExist() {
         openURL(URl);
-        enterText(searchInput, studentData.getPhone());
+        enterText(searchInput, createStudentData.getPhone());
         clickElement(searchButton);
         String idBos = "Trùng TK";
         for (int i = 1; i <= listElements(listStudentData); i++) {
             String classInOnWeb = getTextElement(By.xpath("//tbody/tr[" + i + "]/td[4]"));
             String idBosOnWeb = getTextElement("//tbody/tr[" + i + "]/td[1]");
             String nameOnWeb = getTextElement("//tbody/tr[" + i + "]/td[2]");
-            if (classInOnWeb.contains(studentData.getPhone())) {
-                if (removeAccent(nameOnWeb.toLowerCase()).contains(removeAccent(studentData.getName().toLowerCase())) || removeAccent(studentData.getName().toLowerCase()).contains(removeAccent(nameOnWeb.toLowerCase()))) {
-                    idBos = idBosOnWeb;
-                    break;
+            /*if (classInOnWeb.contains(createStudentData.getPhone())) {*/
+                if (classInOnWeb.equals(createStudentData.getAreaCode().substring(0, 3) + createStudentData.getPhoneAfterEditing()) || classInOnWeb.equals("+" + createStudentData.getPhone())) {
+                    if (removeAccent(nameOnWeb.toLowerCase()).contains(removeAccent(createStudentData.getName().toLowerCase())) || removeAccent(createStudentData.getName().toLowerCase()).contains(removeAccent(nameOnWeb.toLowerCase()))) {
+                        idBos = idBosOnWeb;
+                        break;
+                    }
                 }
-            }
+            /*}*/
         }
         return idBos;
     }
+
+    public static void main(String[] args) {
+        String name = "+84812940525";
+        System.out.println(name.substring(0,3) + name);
+    }
+
 }

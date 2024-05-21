@@ -28,13 +28,16 @@ public class GeneralPage {
     public void Enterinformation(){
         openURL("https://spu.bos.hocmai.com/classes/create");
         String productName = generalData.product.getProductCourseName();
+        String className = generalData.className.getClassName();
+        System.out.println(productName);
         enterText(selectGroupProducInput,productName);
         sleep(0.5);
         clickElement(firstOption);
         enterText(selectProductInput,productName);
         System.out.println(generalData.product.getProductCourseName());
         clickElement(firstOption);
-        enterText(nameClassInput, generalData.className.getClassName());
+        enterText(nameClassInput,className);
+        System.out.println(className);
         sleep(0.5);
         enterText(numberStudentInput, "5");
         sleep(0.5);

@@ -37,8 +37,8 @@ public class CreateStudentPage {
         enterText(nameInput, createStudentData.getName());
         clickElement(codePhoneButton);
         sleep(0.5);
-        enterText(codePhoneInput2, Keys.CLEAR + getAreaCode() + Keys.DOWN + Keys.ENTER);
-        enterText(phoneInput, getPhoneAfterEditing());
+        enterText(codePhoneInput2, Keys.CLEAR + createStudentData.getAreaCode() + Keys.DOWN + Keys.ENTER);
+        enterText(phoneInput, createStudentData.getPhoneAfterEditing());
         enterText(mailInput, createStudentData.getMail());
         enterText(birthDayInput, "01/01/2024");
         clickElement(representativeButton);
@@ -46,57 +46,8 @@ public class CreateStudentPage {
         clickElement(firstOption);
         clickElement(codeClassInButton);
         sleep(0.5);
-        enterText(codeClassInInput, Keys.CLEAR + getAreaCode() + Keys.DOWN + Keys.ENTER);
-        enterText(classInPhoneInput, getPhoneAfterEditing());
+        enterText(codeClassInInput, Keys.CLEAR + createStudentData.getAreaCode() + Keys.DOWN + Keys.ENTER);
+        enterText(classInPhoneInput, createStudentData.getPhoneAfterEditing());
     }
 
-    public String getPhoneAfterEditing() {
-        String lastPhone = "";
-        switch (getAreaCode()) {
-            case "+81 Japan", "+82 Korea, Republic of South Korea", "+33 France","+49 Germany": {
-                lastPhone = createStudentData.getPhone().substring(2);
-            }
-            break;
-            case "+420 Czech Republic","+886 Taiwan": {
-                lastPhone = createStudentData.getPhone().substring(3);
-            }
-            break;
-            default: {
-                lastPhone = createStudentData.getPhone();
-            }
-        }
-        /*if (getAreaCode().equals("+81 Japan") || getAreaCode().equals("+82 Korea, Republic of South Korea")||getAreaCode().equals("+33 France")){
-            lastPhone = studentData.getPhone().substring(2);
-        }
-        else  if (getAreaCode().equals("+420 Czech Republic")){
-            lastPhone = studentData.getPhone().substring(3);
-        }
-
-        else lastPhone = studentData.getPhone();*/
-        return lastPhone;
-    }
-
-    public String getAreaCode() {
-        String areaCode = "";
-        if (createStudentData.getPhone().length() > 10) {
-            if (createStudentData.getPhone().startsWith("81")) {
-                areaCode = "+81 Japan";
-            } else if (createStudentData.getPhone().startsWith("82")) {
-                areaCode = "+82 Korea, Republic of South Korea";
-            } else if (createStudentData.getPhone().startsWith("420")) {
-                areaCode = "+420 Czech Republic";
-            } else if (createStudentData.getPhone().startsWith("886")){
-                areaCode ="+886 Taiwan";
-            }
-            else if (createStudentData.getPhone().startsWith("33")) {
-                areaCode = "+33 France";
-            } else if (createStudentData.getPhone().startsWith("49")){
-                areaCode = "+49 Germany";
-            }
-            else areaCode = "+84 Vietnam";
-        } else {
-            areaCode = "+84 Vietnam";
-        }
-        return areaCode;
-    }
 }

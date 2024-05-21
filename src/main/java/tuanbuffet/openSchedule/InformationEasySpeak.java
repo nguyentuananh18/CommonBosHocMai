@@ -39,10 +39,18 @@ public class InformationEasySpeak implements Runnable{
         this.distance = distance;
     }
 
+    public int getStep() {
+        return step;
+    }
+
+    public int getLocator() {
+        return locator;
+    }
+
     public Date getDateStart(String daystart) throws ParseException {
         return new SimpleDateFormat("dd/MM/yyyy").parse(daystart);
     }
-    public void runEsOld(String daystart, int numberDayRun) throws InterruptedException, ParseException {
+    public void runEsOld() throws InterruptedException, ParseException {
         try {
             calendar.setTime(getDateStart(daystart1));
         } catch (ParseException e) {
@@ -51,7 +59,7 @@ public class InformationEasySpeak implements Runnable{
         openURL("https://spu.bos.hocmai.com/setting/class-time");
         clickElement(addNewOrUpdateButton);
         for (int i = 0; i < numberDayRun1 ; i++){
-            for (int j = locator ; j < productData.EasySpeak.length; j+=step) {
+            for (int j = getLocator() ; j < productData.EasySpeak.length; j += getStep()) {
                 System.out.println("Mở ca ngày: " + dateFormat.format(calendar.getTime()) + " " + productData.EasySpeak[j][0] + " gói: " + productData.productES + " "+ locator);
                 try {
                     EnterInformationES(productData.productES, dateFormat.format(calendar.getTime()), productData.EasySpeak[j][0], productData.EasySpeak[j][1], productData.EasySpeak[j][2]);
@@ -63,7 +71,7 @@ public class InformationEasySpeak implements Runnable{
         }
 
     }
-    public void runEsNew(String daystart, int numberDayRun) throws InterruptedException, ParseException {
+    public void runEsNew() throws InterruptedException, ParseException {
         try {
             calendar.setTime(getDateStart(daystart1));
         } catch (ParseException e) {
@@ -73,7 +81,7 @@ public class InformationEasySpeak implements Runnable{
         clickElement(addNewOrUpdateButton);
 
         for (int i = 0; i < numberDayRun1 ; i++){
-            for (int j = locator ; j < productData.EasySpeak.length; j+=step) {
+            for (int j = getLocator() ; j < productData.EasySpeak.length; j+=getStep()) {
                 System.out.println("Mở ca ngày: " + dateFormat.format(calendar.getTime()) + " " + productData.ESP24FAMX_EasySpeakForAdultsMix[j][0] + " gói: " + productData.productESMix + " "+ locator);
                 try {
                     EnterInformationES(productData.productESMix, dateFormat.format(calendar.getTime()), productData.ESP24FAMX_EasySpeakForAdultsMix[j][0], productData.ESP24FAMX_EasySpeakForAdultsMix[j][1], productData.ESP24FAMX_EasySpeakForAdultsMix[j][2]);
@@ -117,7 +125,7 @@ public class InformationEasySpeak implements Runnable{
                 throw new RuntimeException(e);
             }
             try {
-                runEsOld("abc",10);
+                runEsOld();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } catch (ParseException e) {
@@ -133,7 +141,7 @@ public class InformationEasySpeak implements Runnable{
                 throw new RuntimeException(e);
             }
             try {
-                runEsNew("abc",123);
+                runEsNew();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } catch (ParseException e) {
@@ -149,14 +157,14 @@ public class InformationEasySpeak implements Runnable{
                 throw new RuntimeException(e);
             }
             try {
-                runEsOld("abc",10);
+                runEsOld();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
             try {
-                runEsNew("abc",123);
+                runEsNew();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } catch (ParseException e) {
@@ -167,14 +175,4 @@ public class InformationEasySpeak implements Runnable{
         }
     }
 
-
-    public static void main(String[] args) {
-        /*Thread thread1 = new Thread(new InformationEasySpeak(0,3,5,"16/05/2024","Old")) ;
-        Thread thread2 = new Thread(new InformationEasySpeak(1,3,5,"16/05/2024","Old")) ;
-        Thread thread3 = new Thread(new InformationEasySpeak(2,3,5,"16/05/2024","New")) ;
-        thread1.start();
-        thread2.start();
-        thread3.start();*/
-
-    }
 }

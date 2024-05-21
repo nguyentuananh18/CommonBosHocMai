@@ -52,7 +52,7 @@ public class PanelOpenSchedule extends JPanel {
                 /*Nếu chỉ chọn ES cũ*/
                 if (checkBoxEsOld.isSelected() && !checkBoxEsNew.isSelected()) {
                             try {
-                                informationEasySpeak.runEsOld(DayofStart.getText(), Integer.parseInt(numberDay.getText()));
+                                informationEasySpeak.runEsOld();
                                 JOptionPane.showMessageDialog(null, "Đã chạy xong!");
                             } catch (Exception ex) {
                                 ex.printStackTrace();
@@ -62,7 +62,7 @@ public class PanelOpenSchedule extends JPanel {
                 /*Nếu chỉ chọn ES mới*/
                 else if (!checkBoxEsOld.isSelected() && checkBoxEsNew.isSelected()) {
                             try {
-                                informationEasySpeak.runEsNew(DayofStart.getText(), Integer.parseInt(numberDay.getText()));
+                                informationEasySpeak.runEsNew();
                                 JOptionPane.showMessageDialog(null, "Đã chạy xong!");
                             }catch (Exception ex) {
                                 JOptionPane.showMessageDialog(null, "Đù má, điền đúng trường dữ liệu giúp tôi, huhu:))) 2");
@@ -71,8 +71,8 @@ public class PanelOpenSchedule extends JPanel {
                 /*Nếu chọn cả 2*/
                 else {
                             try {
-                                informationEasySpeak.runEsOld(DayofStart.getText(), Integer.parseInt(numberDay.getText()));
-                                informationEasySpeak.runEsNew(DayofStart.getText(), Integer.parseInt(numberDay.getText()));
+                                informationEasySpeak.runEsOld();
+                                informationEasySpeak.runEsNew();
                             } catch (Exception ex) {
                                 JOptionPane.showMessageDialog(null, "Đù má, điền đúng trường dữ liệu giúp tôi, huhu:))) 3");
                             }

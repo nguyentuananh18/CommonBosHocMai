@@ -13,7 +13,7 @@ public class CheckAddStudentPage {
     By errorAddStudentText = By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr[i]/td/span");
 
     String errorSession = "Student đã tham gia vào một session khác ở thời điểm này";
-    String errorSessionOfStudent ="Student đã tham gia vào một session khác ở thời điểm này";
+
     By saveAndContinueButton = By.xpath("//button[contains(text(),'Lưu Và Tiếp Tục')]");
 
 
@@ -28,12 +28,14 @@ public class CheckAddStudentPage {
             for (int i = 1 ; i<= listElements(listStudentAdded) ; i++){
                 String textError = getTextElement("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr[" + i + "]/td/span" );
                 //nếu học viên có text báo bị lỗi
-                if (textError.contains(errorSessionOfStudent)){
+                if (textError.contains(errorSession)){
                     //gỡ hv đó ra
-                    String textID = getTextElement(By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr[" + i + "]/td[2]/p"));
+
+                    //Lấy id của HV đang bị lỗi
+                    String textID = getTextElement(By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr[" + i + "]/td[1]/p"));
                     System.out.println(StringUtils.right(textID,9));
                         acceptance.append(textID);
-                    clickElement(By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr["+i+"]/td[3]/button"));
+                    clickElement(By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr["+i+"]/td[3]/div"));
                 }
             }
             clickElement(saveAndContinueButton);
@@ -41,4 +43,5 @@ public class CheckAddStudentPage {
         else acceptance.append(" ");
         return acceptance.toString();
     }
+
 }

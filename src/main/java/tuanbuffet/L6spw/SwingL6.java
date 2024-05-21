@@ -60,6 +60,7 @@ public class SwingL6 {
                             JOptionPane.showMessageDialog(null, "Đã chạy xong!");
                         }
                     } catch (Exception error) {
+                        error.printStackTrace();
                         showMessageError();
                     }
                 } else {
