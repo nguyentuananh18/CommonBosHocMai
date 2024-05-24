@@ -8,7 +8,10 @@ public enum CurriculumType {
     ChatRoomForTeens1("Chat room for teens 1"),
     ChatRoomForTeens2("Chat room for teens 2"),
     ChatRoomForTeens3("Chat room for teens 3"),
-    FourCorners("Four Corners");
+    FourCorners1("Four Corners1"),
+    FourCorners2("Four Corners2"),
+    FourCorners3("Four Corners3");
+
 
     private final String value;
 

@@ -10,8 +10,8 @@ public class SearchStudentPage {
     By searchInput = By.xpath("//input[@name=\"nameOrPhoneOrCode\"]");
     By searchButton = By.xpath("//button[contains(text(),'Tìm Kiếm')]");
     By listStudentData = By.xpath("//tbody/tr");
-
-
+    By listPackage = By.xpath("//tbody/tr");
+    By packageButton = By.xpath("//button[ @type=\"button\" and  contains(text(),'Gói')]");
     CreateStudentData createStudentData;
 
     public SearchStudentPage(CreateStudentData data) {
@@ -44,21 +44,43 @@ public class SearchStudentPage {
             String classInOnWeb = getTextElement(By.xpath("//tbody/tr[" + i + "]/td[4]"));
             String idBosOnWeb = getTextElement("//tbody/tr[" + i + "]/td[1]");
             String nameOnWeb = getTextElement("//tbody/tr[" + i + "]/td[2]");
-            /*if (classInOnWeb.contains(createStudentData.getPhone())) {*/
-                if (classInOnWeb.equals(createStudentData.getAreaCode().substring(0, 3) + createStudentData.getPhoneAfterEditing()) || classInOnWeb.equals("+" + createStudentData.getPhone())) {
-                    if (removeAccent(nameOnWeb.toLowerCase()).contains(removeAccent(createStudentData.getName().toLowerCase())) || removeAccent(createStudentData.getName().toLowerCase()).contains(removeAccent(nameOnWeb.toLowerCase()))) {
+            if (classInOnWeb.equals(createStudentData.getAreaCode().substring(0, 3) + createStudentData.getPhoneAfterEditing()) || classInOnWeb.equals("+" + createStudentData.getPhone())) {
+                if (removeAccent(nameOnWeb.toLowerCase()).contains(removeAccent(createStudentData.getName().toLowerCase())) || removeAccent(createStudentData.getName().toLowerCase()).contains(removeAccent(nameOnWeb.toLowerCase()))) {
+                    idBos = idBosOnWeb;
+                    break;
+                } else {
+                    clickElement(By.xpath("//tbody/tr[\" + i + \"]/td[2]"));
+                    sleep(0.5);
+                    switchToWindows(1);
+                    clickElement(packageButton);
+                    sleep(1);
+                    if (getTextElement(By.xpath("//tbody/tr/td/p[1]")).contains("Không Có Dữ Liệu")) {
+                        closeWindow();
+                        switchToWindows(0);
                         idBos = idBosOnWeb;
                         break;
+                    } else {
+                        int numberPackage = listElements(listPackage);
+                        for (int j = 1; j <= numberPackage; j++) {
+                            if (getTextElement(By.xpath("//tbody/tr[" + j + "]/td[3]/span")).contains("Official")) {
+                                closeWindow();
+                                switchToWindows(0);
+                                break;
+                            } else {
+                                if (j == numberPackage) {
+                                    idBos = idBosOnWeb;
+                                    closeWindow();
+                                    switchToWindows(0);
+                                    break;
+                                }
+                            }
+                        }
                     }
+
                 }
-            /*}*/
+            }
         }
         return idBos;
-    }
-
-    public static void main(String[] args) {
-        String name = "+84812940525";
-        System.out.println(name.substring(0,3) + name);
     }
 
 }

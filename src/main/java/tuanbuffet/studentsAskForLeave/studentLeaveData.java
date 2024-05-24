@@ -1,4 +1,5 @@
 package tuanbuffet.studentsAskForLeave;
+import static tuanbuffet.common.StringProcessing.*;
 
 public class StudentLeaveData {
 
@@ -18,7 +19,8 @@ public class StudentLeaveData {
         else {
             this.reason = "Học Viên Xin Nghỉ Không Đúng Quy Định";
         }
-        this.schedule = schedule;
+        this.schedule = removeAccent(schedule).toLowerCase().replaceAll("\\s+", "");
+
         this.classType = classType;
         this.teacher = teacher;
     }

@@ -51,13 +51,7 @@ public class PanelL6 extends JPanel {
                     runL6.AddPackageAndOpenSchedule();
                 }
                 if (CreateClass.isSelected()) {
-
-                    try {
                         runL6.CreateClass();
-                    } catch (InterruptedException ex) {
-                        runL6.QuitProgram();
-                        showMessageError();
-                    }
                 }
                 runL6.QuitProgram();
                 JOptionPane.showMessageDialog(null, "Đã chạy xong!");

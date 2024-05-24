@@ -63,7 +63,7 @@ public class CreateStudentData {
     }
 
     public String getName() {
-        return name.trim();
+        return DeleteSpecialCharacters(name.trim());
     }
 
     public String getPhone() {

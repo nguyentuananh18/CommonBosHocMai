@@ -27,6 +27,7 @@ public class ConfigurationPage {
             sleep(1);
             if (!getAttributeElement(teachAllButton,"class").contains("Mui-checked")){
                 clickElement(teachAllButton);
+                sleep(1);
                 clickElement(saveButton);
                 return getTextElement(notifyMessageText).contains("Cập nhật ca học thành công!");
             }

@@ -29,26 +29,24 @@ public class GeneralPage {
         openURL("https://spu.bos.hocmai.com/classes/create");
         String productName = generalData.product.getProductCourseName();
         String className = generalData.className.getClassName();
-        System.out.println(productName);
         enterText(selectGroupProducInput,productName);
-        sleep(0.5);
+        sleep(1);
         clickElement(firstOption);
         enterText(selectProductInput,productName);
-        System.out.println(generalData.product.getProductCourseName());
         clickElement(firstOption);
         enterText(nameClassInput,className);
         System.out.println(className);
-        sleep(0.5);
+        sleep(1);
         enterText(numberStudentInput, "5");
-        sleep(0.5);
+        sleep(1);
         enterText(typeClassInput, "Chính Thức");
-        sleep(0.5);
+        sleep(1);
         clickElement(firstOption);
         enterText(CSKHInput, "(cs) - ( CS Default )");
-        sleep(0.5);
+        sleep(1);
         clickElement(firstOption);
-
         clickElement(submitButton);
         sleep(1);
     }
+
 }

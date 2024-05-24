@@ -16,13 +16,14 @@ public class SchedulePage {
     private final  By submitCreateButton = By.xpath("//button[contains(text(),'Tạo Và Sang Bước Kế')]");
     public void Enterinformation(ScheduleData data) {
         enterText(nameCourseInput,data.getCurriculum() );
-        /*Thread.sleep(500);*/
+        sleep(1);
         clickElement(firstOption);
         enterText(startDay,"10102025");
-        sleep(0.5);
+        sleep(1);
         enterText(numberDurationInput,"1");
-        /*Thread.sleep(500);*/
+        sleep(0.5);
         enterText(scheduleInput,"08:25 - 08:55");
+        sleep(0.5);
         clickElement(firstOption);
         clickElement(submitCreateButton);
         waitForPageLoaded();

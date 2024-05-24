@@ -35,13 +35,17 @@ public class StudentPage {
     }
 
     public String Enterinformation() {
-        String noteErrorId = null;
-        if (EnterIdBos(studentData.getIdBos1())) {
-            noteErrorId += studentData.getIdBos1();
+        String noteErrorId = "";
+        if (!studentData.getIdBos1().isEmpty()){
+            if (EnterIdBos(studentData.getIdBos1())) {
+                noteErrorId += studentData.getIdBos1();
+            }
         }
         if (checkClassType() == 2) {
-            if (EnterIdBos(studentData.getIdBos2())) {
-                noteErrorId += studentData.getIdBos2();
+            if (!studentData.getIdBos2().isEmpty()){
+                if (EnterIdBos(studentData.getIdBos2())) {
+                    noteErrorId += studentData.getIdBos2();
+                }
             }
         }
         clickElement(saveAndContinueButton);
@@ -57,8 +61,8 @@ public class StudentPage {
         //Nếu như có thấy HV
         if (verifyElementIsDisplay(addStudentButton)) {
             clickElement(addStudentButton);
-            //Nếu như HV được add thành công
             sleep(3);
+            //Nếu như HV được add thành công
             if (getTextElement(notifyMessage).contains(addHvSuccess)) {
                 sleep(2);
                 return true;
@@ -76,6 +80,7 @@ public class StudentPage {
             // ngược lại nếu không thấy học viên, thì sẽ add gói và mở lịch, sau đó tìm lại
             ReAddPackageAndOpenSchedule();
             sleep(1);
+            clearText(informationStudentInput);
             enterText(informationStudentInput, idBos.substring(1));
             sleep(1);
             clickElement(searchButton);

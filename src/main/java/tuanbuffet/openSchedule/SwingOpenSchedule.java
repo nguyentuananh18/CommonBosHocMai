@@ -91,8 +91,8 @@ public class SwingOpenSchedule {
         //panel startDay
         JPanel Jpanel_Option = new JPanel();
         Jpanel_Option.setLayout(new GridLayout(3, 1));
-        Jpanel_Option.add(checkBoxEsOld, BorderLayout.NORTH);
-        Jpanel_Option.add(checkBoxEsNew, BorderLayout.CENTER);
+        Jpanel_Option.add(checkBoxEsOld);
+        Jpanel_Option.add(checkBoxEsNew);
 
         JPanel JPanel_Config = new JPanel();
         JPanel_Config.setLayout(new GridLayout(3, 2));

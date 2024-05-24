@@ -27,11 +27,25 @@ public class PackagePage {
         String productName = product.getProductCourseName();
         System.out.println(productName);
         clickElement(addPackageButton);
-        enterText(selectProductButton, productName);
-        clickElement(firstOption);
-        enterText(selectPackageButton, "320" );
-        clickElement(firstOption);
+        try {
+            enterText(selectProductButton, productName);
+            clickElement(firstOption);
+        }
+        catch (Exception e){
+            enterText(selectProductButton, productName);
+            clickElement(firstOption);
+        }
+        try {
+            enterText(selectPackageButton, "320" );
+            clickElement(firstOption);
+        }
+        catch (Exception e){
+            clearText(selectPackageButton);
+            enterText(selectPackageButton, "320" );
+            clickElement(firstOption);
+        }
         clickElement(addButton);
+        sleep(1);
         return getTextElement(notifyMessageText).contains("Tạo Gói Mới Thành Công");
     }
 }
