@@ -25,15 +25,21 @@ public class CheckAddStudentPage {
     public String AcceptanceAddStudent(){
         StringBuilder acceptance = new StringBuilder();
         if (getTextElement(notifyMessage).contains(errorSession) || errorSession.contains(getTextElement(notifyMessage))){
+            clickElement(closeNotifyMessage);
             for (int i = 1 ; i<= listElements(listStudentAdded) ; i++){
                 String textError = getTextElement("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr[" + i + "]/td/span" );
                 //nếu học viên có text báo bị lỗi
                 if (textError.contains(errorSession)){
                     //gỡ hv đó ra
-
                     //Lấy id của HV đang bị lỗi
                     String textID = getTextElement(By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr[" + i + "]/td[1]/p"));
                     System.out.println(StringUtils.right(textID,9));
+                    if (textID.contains(studentData.getIdBos1())){
+                        studentData.setNote1("Cancel");
+                    }
+                    else {
+                        studentData.setNote2("Cancel");
+                    }
                         acceptance.append(textID);
                     clickElement(By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr["+i+"]/td[3]/div"));
                 }

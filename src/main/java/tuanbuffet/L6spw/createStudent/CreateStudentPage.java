@@ -4,7 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
 import static tuanbuffet.common.WebUI.*;
+import static  tuanbuffet.common.StringProcessing.*;
 import static tuanbuffet.L6spw.commonL6.BybyCommon.*;
+
 public class CreateStudentPage {
     private String URL = "https://spu.bos.hocmai.com/students/create";
 
@@ -21,6 +23,7 @@ public class CreateStudentPage {
     private final By classInPhoneInput = By.xpath("//input[@name=\"classInPhone\"]");
     private final By submitButton = By.xpath("//button[@type='submit']");
 
+
     CreateStudentData createStudentData;
 
     public CreateStudentPage(CreateStudentData data) {
@@ -29,6 +32,7 @@ public class CreateStudentPage {
 
     public void EnterInformation() {
         openURL(URL);
+
         EnterData();
         clickElement(submitButton);
     }

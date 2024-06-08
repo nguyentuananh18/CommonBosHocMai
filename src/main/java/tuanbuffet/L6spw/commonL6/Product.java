@@ -1,44 +1,17 @@
 package tuanbuffet.L6spw.commonL6;
 
+import java.util.List;
+
 public class Product {
-    ListTeacherName listTeacherName = new ListTeacherName();
-    /*public ClassType classType;
-    public TeacherType teacherType;
-    public  Product(ClassType classType, TeacherType teacherType){
-        this.classType = classType;
-        this.teacherType = teacherType;
-    }
-
-
-    public String getClassType() {
-        return classType.getValue();
-    }
-
-    public String getTeacherType() {
-        return teacherType.getValue();
-    }
-
-    public void setClassType(ClassType classType) {
-        this.classType = classType;
-    }
-
-    public void setTeacherType(TeacherType teacherType) {
-        this.teacherType = teacherType;
-    }
-    public String getProduct(){
-        return getTeacherType() + " " + getClassType();
-    }*/
     String classType;
     String teacherName;
+    List<Teacher> listTeacher;
     boolean status = false;
 
-    public Product(String classTypes, String teacherName) {
+    public Product(String classTypes, String teacherName, List<Teacher> listTeacher){
         this.classType = classTypes;
         this.teacherName = teacherName;
-    }
-
-    public ListTeacherName getListTeacherName() {
-        return listTeacherName;
+        this.listTeacher = listTeacher;
     }
 
     public String getClassType() {
@@ -56,43 +29,41 @@ public class Product {
             return "1:2";
         } else return "1:8";
     }
-    public boolean checkTeacherType(String[] teacherType) {
-        for (String teacher : teacherType) {
-            if (teacher.trim().equals(getTeacherName().trim())) {
-                status = true;
+    public String checkTeacherType() {
+        String GV = "";
+        for (Teacher teacher : listTeacher) {
+            if (teacher.getGVNamPhi() != null && teacher.getGVNamPhi().trim().equals(getTeacherName())) {
+                GV = "NAMPHI";
                 break;
+            } else if (teacher.getGVUSUK() != null && teacher.getGVUSUK().trim().equals(getTeacherName())) {
+                GV = "USUK";
+                break;
+            } else if (teacher.getGVVN() != null && teacher.getGVVN().trim().equals(getTeacherName())) {
+                GV = "VN";
+                break;
+            } else {
+                GV = "PHIL";
             }
         }
-        return status;
+        return GV;
     }
 
-    public String getProductCourseName() {
-        if (checkClassType().equals("1:1")) {
-            if (checkTeacherType(listTeacherName.teacherVietNam)) {
-                return "SPEAKWELL - GV Việt Nam 1:1";
-            } else if (checkTeacherType(listTeacherName.TeacherUSUK)) {
-                return "SPEAKWELL - GV US/UK 1:1";
-            } else if (checkTeacherType(listTeacherName.teacherNamPhi)) {
-                return "SPEAKWELL - GV Nam Phi 1:1";
-            } else return "SPEAKWELL - GV Philippines 1:1";
-        } else if (checkClassType().equals("1:2")) {
-            if (checkTeacherType(listTeacherName.teacherVietNam)) {
-                return "SPEAKWELL - GV Việt Nam 1:2";
-            } else if (checkTeacherType(listTeacherName.TeacherUSUK)) {
-                return "SPEAKWELL - GV US/UK 1:2";
-            } else if (checkTeacherType(listTeacherName.teacherNamPhi)) {
-                return "SPEAKWELL - GV Nam Phi 1:2";
-            } else return "SPEAKWELL - GV Philippines 1:2";
+    public String getProductCourseName(){
+        String classType = checkClassType();
+        String teacherType = checkTeacherType();
+        String country;
 
+        if (teacherType.equals("VN")) {
+            country = "Việt Nam";
+        } else if (teacherType.equals("USUK")) {
+            country = "US/UK";
+        } else if (teacherType.equals("NAMPHI")) {
+            country = "Nam Phi";
         } else {
-            if (checkTeacherType(listTeacherName.teacherVietNam)) {
-                return "SPEAKWELL - GV Việt Nam 1:3";
-            } else if (checkTeacherType(listTeacherName.TeacherUSUK)) {
-                return "SPEAKWELL - GV US/UK 1:3";
-            } else if (checkTeacherType(listTeacherName.teacherNamPhi)) {
-                return "SPEAKWELL - GV Nam Phi 1:3";
-            } else return "SPEAKWELL - GV Philippines 1:3";
+            country = "Philippines";
         }
+
+        return String.format("SPEAKWELL - GV %s %s", country, classType);
     }
 }
 

@@ -4,7 +4,12 @@ import org.openqa.selenium.By;
 import tuanbuffet.L6spw.addPackage.ConfigurationPage;
 import tuanbuffet.L6spw.addPackage.PackageAndConfiurationData;
 import tuanbuffet.L6spw.addPackage.PackagePage;
+import tuanbuffet.L6spw.commonL6.Teacher;
 
+import java.util.List;
+
+import static tuanbuffet.L6spw.commonL6.BybyCommon.*;
+import static  tuanbuffet.common.StringProcessing.*;
 import static tuanbuffet.common.WebUI.*;
 
 public class StudentPage {
@@ -15,7 +20,6 @@ public class StudentPage {
     private final By saveAndContinueButton = By.xpath("//button[contains(text(),'Lưu Và Tiếp Tục')]");
     private final By courseInformationText = By.xpath("//form//legend[contains(text(),'SPEAKWELL - GV')]");
 
-    By notifyMessage = By.xpath("//div[@id='notistack-snackbar']");
 
     By listStudentAdded = By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr");
     By errorAddStudentText = By.xpath("//legend[contains(text(),'Học Viên Đã Thêm')]//following-sibling::div//tbody/tr[i]/td/span");
@@ -28,32 +32,36 @@ public class StudentPage {
     PackageAndConfiurationData packageAndConfiurationData;
     PackagePage packagePage;
     ConfigurationPage configurationPage;
+    List<Teacher> listTeacher;
 
-    public StudentPage(StudentData studentData, PackageAndConfiurationData packageAndConfiurationData) {
+    public StudentPage(StudentData studentData, PackageAndConfiurationData packageAndConfiurationData,List<Teacher> listTeacher ) {
         this.studentData = studentData;
         this.packageAndConfiurationData = packageAndConfiurationData;
+        this.listTeacher =listTeacher;
     }
 
     public String Enterinformation() {
         String noteErrorId = "";
         if (!studentData.getIdBos1().isEmpty()){
             if (EnterIdBos(studentData.getIdBos1())) {
+                studentData.setNote1("done");
                 noteErrorId += studentData.getIdBos1();
             }
         }
         if (checkClassType() == 2) {
             if (!studentData.getIdBos2().isEmpty()){
                 if (EnterIdBos(studentData.getIdBos2())) {
+                    studentData.setNote2("done");
                     noteErrorId += studentData.getIdBos2();
                 }
             }
         }
         clickElement(saveAndContinueButton);
         return noteErrorId;
-
     }
 
     public boolean EnterIdBos(String idBos) {
+        clearText(informationStudentInput);
         enterText(informationStudentInput, idBos);
         sleep(1);
         clickElement(searchButton);
@@ -64,6 +72,7 @@ public class StudentPage {
             sleep(3);
             //Nếu như HV được add thành công
             if (getTextElement(notifyMessage).contains(addHvSuccess)) {
+                clickElement(closeNotifyMessage);
                 sleep(2);
                 return true;
             } else {
@@ -72,6 +81,7 @@ public class StudentPage {
                 clickElement(addStudentButton);
                 sleep(3);
                 if (getTextElement(notifyMessage).contains(addHvSuccess)) {
+                    clickElement(closeNotifyMessage);
                     sleep(5);
                     return true;
                 } else return false;
@@ -90,6 +100,7 @@ public class StudentPage {
                 System.out.println("Đã tìm thấy Học viên và add vào lớp");
                 sleep(3);
                 if (getTextElement(notifyMessage).contains(addHvSuccess)) {
+                    clickElement(closeNotifyMessage);
                     sleep(5);
                     return true;
                 } else return false;
@@ -103,9 +114,9 @@ public class StudentPage {
     public void ReAddPackageAndOpenSchedule() {
         System.out.println("Không tìm thấy Học viên, đang add lại gói và mở full lịch");
         newWindow();
-        packagePage = new PackagePage(packageAndConfiurationData);
+        packagePage = new PackagePage(packageAndConfiurationData,listTeacher);
         configurationPage = new ConfigurationPage(packageAndConfiurationData);
-        packagePage.enterInformationPackage();
+        packagePage.addPackage();
         configurationPage.OpenTeachAll();
         closeWindow();
         switchToWindows(0);

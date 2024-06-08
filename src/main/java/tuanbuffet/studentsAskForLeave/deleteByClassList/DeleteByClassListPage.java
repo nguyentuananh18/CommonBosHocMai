@@ -2,7 +2,7 @@ package tuanbuffet.studentsAskForLeave.deleteByClassList;
 
 import org.openqa.selenium.By;
 import tuanbuffet.studentsAskForLeave.StudentLeaveData;
-
+import static  tuanbuffet.common.StringProcessing.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

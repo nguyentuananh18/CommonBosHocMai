@@ -1,13 +1,12 @@
 package tuanbuffet.L6spw.addPackage;
 
 
-import tuanbuffet.L6spw.commonL6.ListTeacherName;
+import tuanbuffet.L6spw.commonL6.TeacherData;
 
 public class PackageAndConfiurationData {
     private String idBos;
     private String classType;
     private String teacher;
-    ListTeacherName listTeacherName = new ListTeacherName();
 
     public PackageAndConfiurationData(String idBos, String classType, String teacher) {
         this.idBos = idBos;

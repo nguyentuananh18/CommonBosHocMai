@@ -2,6 +2,7 @@ package tuanbuffet.L6spw.createClass.generalpage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import static  tuanbuffet.common.StringProcessing.*;
 
 
 import static tuanbuffet.common.WebUI.*;

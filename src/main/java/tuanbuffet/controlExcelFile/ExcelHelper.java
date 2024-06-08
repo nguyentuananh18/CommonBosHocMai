@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
@@ -24,6 +26,8 @@ public class ExcelHelper {
     private final Map<String, Integer> columns = new HashMap<>();
 
     public void setExcelFile(String ExcelPath, String SheetName){
+        System.setProperty("org.apache.poi.util.POILogger", "org.apache.poi.util.NullLogger");
+        ZipSecureFile.setMinInflateRatio(0);
         try {
             File f = new File(ExcelPath);
 
@@ -53,6 +57,7 @@ public class ExcelHelper {
 
 
     public String getCell(int columnIndex, int rowIndex) {
+        System.setProperty("org.apache.poi.util.POILogger", "org.apache.poi.util.NullLogger");
         try {
             cell = sh.getRow(rowIndex).getCell(columnIndex);
             String CellData = null;
@@ -88,6 +93,7 @@ public class ExcelHelper {
 
     //set by column index
     public void setCell(String text, int columnIndex, int rowIndex) {
+
         try {
             row = sh.getRow(rowIndex);
             if (row == null) {

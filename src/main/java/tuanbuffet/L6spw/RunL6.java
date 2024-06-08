@@ -3,6 +3,7 @@ package tuanbuffet.L6spw;
 import tuanbuffet.L6spw.addPackage.ConfigurationPage;
 import tuanbuffet.L6spw.addPackage.PackageAndConfiurationData;
 import tuanbuffet.L6spw.addPackage.PackagePage;
+import tuanbuffet.L6spw.commonL6.Teacher;
 import tuanbuffet.L6spw.createClass.curriculumPage.CurriculumData;
 import tuanbuffet.L6spw.createClass.curriculumPage.CurriculumPage;
 import tuanbuffet.L6spw.createClass.generalpage.ClassName;
@@ -39,17 +40,16 @@ public class RunL6 implements Runnable{
     ConfigurationPage configurationPage;
     ChangeStudentInformationData changeStudentInformationData;
     ChangeStudentInformationPage changeStudentInformationPage;
-
     private int step;
     private int locator;
     private String productNeedRun;
-    public RunL6(){
-
-    }
-    public RunL6(int locator,int step, String productNeedRun){
+    private List<Teacher> listTeacher;
+    public RunL6(){}
+    public RunL6(int locator,int step, String productNeedRun,List<Teacher> list){
         this.locator = locator;
         this.step = step;
         this.productNeedRun = productNeedRun;
+        this.listTeacher = list;
     }
 
     public int getStep() {
@@ -68,40 +68,52 @@ public class RunL6 implements Runnable{
     public void CreateStudent() throws InterruptedException {
 
         for (int i = getLocator(); ; i+= getStep()) {
-            excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-            if (excel.getCell("ID", i).isEmpty() || excel.getCell("NAME", i).isEmpty()) {
-                break;
-            }
-            String idbos = runCreateStudentPage.RunCreateStudent(excel.getCell("NAME", i), excel.getCell("MAIL", i), excel.getCell("PHONE", i));
-            String classin="";
             lock.lock();
             excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-            /*Nếu như id bos bị trùng TK*/
-            if (idbos.contains("Trùng TK") || idbos.isEmpty() ) {
-                /*sẽ điền chữ trùng TK vào ô classIn*/
-                excel.setCell(idbos, "CLASSIN", i);
-            } else {
-                /*Ngược lại nếu như ra id bos, thì sẽ điền zô ô ID BOS*/
-                excel.setCell(idbos, "IDBOS", i);
-                excel.setCell(excel.getCell("PHONE",i),"CLASSIN",i);
-                classin = excel.getCell("PHONE",i);
-            }
-            /*excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");*/
+            lock.unlock();
             if (excel.getCell("ID", i).isEmpty() || excel.getCell("NAME", i).isEmpty()) {
                 break;
             }
-            DataAcceptance dataAcceptance = new DataAcceptance();
-            dataAcceptance.setId(excel.getCell("ID", i));
-            dataAcceptance.setName(excel.getCell("NAME", i));
-            dataAcceptance.setClassIn(classin);
-            dataAcceptance.setIdBos(idbos);
-            dataAcceptanceList.add(dataAcceptance);
-            if (!excel.getCell("IDBOS", i).isEmpty()){
-                changeStudentInformationData = new ChangeStudentInformationData(excel.getCell("IDBOS", i),excel.getCell("NAME", i),excel.getCell("MAIL", i),excel.getCell("PHONE", i));
-                changeStudentInformationPage = new ChangeStudentInformationPage(changeStudentInformationData);
-                changeStudentInformationPage.ChangeNameStudent();
+            try {
+                String idbos = runCreateStudentPage.RunCreateStudent(excel.getCell("NAME", i), excel.getCell("MAIL", i), excel.getCell("PHONE", i));
+                String classin="";
+                lock.lock();
+                excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
+                /*Nếu như id bos bị trùng TK*/
+                if (idbos.contains("Trùng TK") || idbos.isEmpty() ) {
+                    /*sẽ điền chữ trùng TK vào ô classIn*/
+                    excel.setCell(idbos, "CLASSIN", i);
+                } else {
+                    /*Ngược lại nếu như ra id bos, thì sẽ điền zô ô ID BOS*/
+                    excel.setCell(idbos, "IDBOS", i);
+                    excel.setCell(excel.getCell("PHONE",i),"CLASSIN",i);
+                    classin = excel.getCell("PHONE",i);
+                }
+                /*excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");*/
+                if (excel.getCell("ID", i).isEmpty() || excel.getCell("NAME", i).isEmpty()) {
+                    break;
+                }
+                DataAcceptance dataAcceptance = new DataAcceptance();
+                dataAcceptance.setId(excel.getCell("ID", i));
+                dataAcceptance.setName(excel.getCell("NAME", i));
+                dataAcceptance.setClassIn(classin);
+                dataAcceptance.setIdBos(idbos);
+                dataAcceptanceList.add(dataAcceptance);
+                if (!excel.getCell("IDBOS", i).isEmpty()){
+                    changeStudentInformationData = new ChangeStudentInformationData(excel.getCell("IDBOS", i),excel.getCell("NAME", i),excel.getCell("MAIL", i),excel.getCell("PHONE", i));
+                    changeStudentInformationPage = new ChangeStudentInformationPage(changeStudentInformationData);
+                    changeStudentInformationPage.ChangeNameStudent();
+                }
+                lock.unlock();
             }
-            lock.unlock();
+
+            catch (Exception e){
+                lock.lock();
+                excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
+                excel.setCell("Cancel_error", "CLASSIN", i);
+                lock.unlock();
+            }
+
         }
     }
 
@@ -112,28 +124,40 @@ public class RunL6 implements Runnable{
             if (excel.getCell("ID", i).isEmpty() || excel.getCell("NAME", i).isEmpty()) {
                 break;
             }
-            if (!excel.getCell("IDBOS", i).isEmpty()) {
-                excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-                packageAndConfiurationData = new PackageAndConfiurationData(excel.getCell("IDBOS", i), excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i));
-                packagePage = new PackagePage(packageAndConfiurationData);
-                boolean acceptanceAddPackage = packagePage.enterInformationPackage();
+            try {
+                if (!excel.getCell("IDBOS", i).isEmpty()) {
+                    excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
+                    packageAndConfiurationData = new PackageAndConfiurationData(excel.getCell("IDBOS", i), excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i));
+                    packagePage = new PackagePage(packageAndConfiurationData,listTeacher);
+                    boolean acceptanceAddPackage = packagePage.addPackage();
+                    lock.lock();
+                    excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
+                    excel.setCell(String.valueOf(acceptanceAddPackage), "NOTE CHECK PACKAGE", i);
+                    lock.unlock();
+
+                    configurationPage = new ConfigurationPage(packageAndConfiurationData);
+                    boolean acceptanceOpenSchedule = configurationPage.OpenTeachAll();
+                    lock.lock();
+                    excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
+                    excel.setCell(String.valueOf(acceptanceOpenSchedule), "NOTE CHECK OPEN SCHEDULE", i);
+                    lock.unlock();
+                }
+            }
+            catch (Exception e){
                 lock.lock();
                 excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-                excel.setCell(String.valueOf(acceptanceAddPackage), "NOTE CHECK PACKAGE", i);
-                lock.unlock();
-                configurationPage = new ConfigurationPage(packageAndConfiurationData);
-                boolean acceptanceOpenSchedule = configurationPage.OpenTeachAll();
-                lock.lock();
-                excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-                excel.setCell(String.valueOf(acceptanceOpenSchedule), "NOTE CHECK OPEN SCHEDULE", i);
+                excel.setCell("Cancel_error", "NOTE CHECK OPEN SCHEDULE", i);
                 lock.unlock();
             }
+
         }
     }
 
 
     public void Setup() throws InterruptedException {
+        lock.lock();
         openBrowser();
+        lock.unlock();
         login("ctvanhnt2", "anhnt216836");
     }
 
@@ -154,71 +178,68 @@ public class RunL6 implements Runnable{
         CurriculumData curriculumData;
         CurriculumPage curriculumPage;
         for (int i = getLocator(); ; i+= getStep()) {
+
             if (excel.getCell("NAME", i).isEmpty()) {
                 break;
             }
-            Product product = new Product(excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i));
-            if (!excel.getCell("NAME", i).isEmpty()) {
-                className = new ClassName(excel.getCell("NAME", i), excel.getCell("CLASS TYPE", i), excel.getCell("SCHEDULE", i), excel.getCell("TEACHER", i), excel.getCell("CURRICULUM", i), excel.getCell("NAME", i + 1), excel.getCell("CLASS TYPE", i + 1), excel.getCell("SCHEDULE", i + 1), excel.getCell("TEACHER", i + 1), excel.getCell("CURRICULUM", i + 1));
-                lock.lock();
-                excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-                excel.setCell(className.getClassName(), "NOTE CHECK CLASS L6",i);
-                lock.unlock();
-                GeneralData generalData = new GeneralData(product, className);
-                generalPage = new GeneralPage(generalData);
-                if (!className.getClassName().isEmpty()) {
-                    generalPage.Enterinformation();
-
-                    curriculum = new Curriculum(excel.getCell("CURRICULUM", i));
-                    scheduleData = new ScheduleData(curriculum);
-                    schedule = new SchedulePage();
-                    schedule.Enterinformation(scheduleData);
-                    if (!excel.getCell("ID", i + 1).isEmpty()) {
-                        studentData = new StudentData(excel.getCell("IDBOS", i), excel.getCell("IDBOS", i + 1));
-                    } else {
-                        studentData = new StudentData(excel.getCell("IDBOS", i));
-                    }
-                    packageAndConfiurationData = new PackageAndConfiurationData(excel.getCell("IDBOS", i), excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i));
-                    studentPage = new StudentPage(studentData,packageAndConfiurationData);
-                    String acceptanceStudent = studentPage.Enterinformation();
-                    lock.lock();
-
-                    excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-                    if (acceptanceStudent.contains(excel.getCell("IDBOS", i))){
-                        excel.setCell("Cancel", "NOTE ADD ID TO CLASS", i);
-                    }
-                    if (acceptanceStudent.contains(excel.getCell("IDBOS", i + 1))){
-                        excel.setCell("Cancel", "NOTE ADD ID TO CLASS", i + 1);
-                    }
-                    lock.unlock();
-                    checkAddStudentPage = new CheckAddStudentPage(studentData);
-                    String errorAddST = checkAddStudentPage.AcceptanceAddStudent();
+            try {
+                Product product = new Product(excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i), listTeacher);
+                if (!excel.getCell("NAME", i).isEmpty()) {
+                    className = new ClassName(excel.getCell("NAME", i), excel.getCell("CLASS TYPE", i), excel.getCell("SCHEDULE", i), excel.getCell("TEACHER", i), excel.getCell("CURRICULUM", i), excel.getCell("NAME", i + 1), excel.getCell("CLASS TYPE", i + 1), excel.getCell("SCHEDULE", i + 1), excel.getCell("TEACHER", i + 1), excel.getCell("CURRICULUM", i + 1));
                     lock.lock();
                     excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-                    if (errorAddST.contains(excel.getCell("IDBOS", i))) {
-                        excel.setCell("Cancel", "NOTE ADD ID TO CLASS", i);
-                    } else {
-                        excel.setCell("Done", "NOTE ADD ID TO CLASS", i);
-                    }
-                    if (errorAddST.contains(excel.getCell("IDBOS", i + 1))) {
-                        excel.setCell("Cancel", "NOTE ADD ID TO CLASS", i + 1);
-                    } else {
-                        excel.setCell("Done", "NOTE ADD ID TO CLASS", i + 1);
-                    }
+                    excel.setCell(className.getClassName(), "NOTE CHECK CLASS L6",i);
                     lock.unlock();
-                    curriculumData = new CurriculumData(excel.getCell("CURRICULUM", i));
-                    curriculumPage = new CurriculumPage(curriculumData);
-                    curriculumPage.Enterinformation();
+                    GeneralData generalData = new GeneralData(product, className);
+                    generalPage = new GeneralPage(generalData);
+                    if (!className.getClassName().isEmpty()) {
+                        generalPage.Enterinformation();
+                        System.out.println(excel.getCell("CURRICULUM", i) + " là giáo trình");
+                        curriculum = new Curriculum(excel.getCell("CURRICULUM", i));
+                        String shcedule = excel.getCell("SCHEDULE",i);
+                        scheduleData = new ScheduleData(curriculum,shcedule);
+                        schedule = new SchedulePage(scheduleData);
+                        schedule.Enterinformation();
+
+                        studentData = new StudentData(excel.getCell("IDBOS", i), excel.getCell("IDBOS", i + 1),"","");
+
+                        packageAndConfiurationData = new PackageAndConfiurationData(excel.getCell("IDBOS", i), excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i));
+                        studentPage = new StudentPage(studentData,packageAndConfiurationData, listTeacher);
+                        studentPage.Enterinformation();
+                        checkAddStudentPage = new CheckAddStudentPage(studentData);
+                        String errorAddST = checkAddStudentPage.AcceptanceAddStudent();
+                        lock.lock();
+                        excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
+                        if (errorAddST.contains(excel.getCell("IDBOS", i))) {
+                            excel.setCell("Cancel", "NOTE ADD ID TO CLASS", i);
+                        } else {
+                            excel.setCell("Done", "NOTE ADD ID TO CLASS", i);
+                        }
+                        if (errorAddST.contains(excel.getCell("IDBOS", i + 1))) {
+                            excel.setCell("Cancel", "NOTE ADD ID TO CLASS", i + 1);
+                        } else {
+                            excel.setCell("Done", "NOTE ADD ID TO CLASS", i + 1);
+                        }
+                        excel.setCell(studentData.getNote1(),"ST1",i);
+                        excel.setCell(studentData.getNote2(),"ST2",i+1);
+                        lock.unlock();
+                        curriculumData = new CurriculumData(excel.getCell("CURRICULUM", i),"");
+                        curriculumPage = new CurriculumPage(curriculumData);
+                        curriculumData.setCourseName(curriculumData.getCurriculum());
+                        curriculumData.setLesson(curriculumData.getCurriculum());
+                        curriculumPage.Enterinformation();
+                        lock.lock();
+                        excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
+                        excel.setCell(curriculumData.getNote(),"CURRICULUM",i);
+                        lock.unlock();
+                    }
                 }
             }
-        }
-    }
-    public void InsertData(){
-        excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-        for (int i = 0 ;i<dataAcceptanceList.size() ;i++){
-            if (dataAcceptanceList.get(i).getId().equals(excel.getCell("ID",i+1))){
-                excel.setCell(dataAcceptanceList.get(i).getIdBos(),"IDBOS",i+1);
-                excel.setCell(dataAcceptanceList.get(i).getClassIn(),"CLASSIN",i+1);
+            catch (Exception exception){
+                lock.lock();
+                excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
+                excel.setCell("Cancel_ERORR", "NOTE CHECK CLASS L6",i);
+                lock.unlock();
             }
         }
     }
@@ -256,36 +277,5 @@ public class RunL6 implements Runnable{
             CreateClass();
             closeBrowser();
         }
-    }
-
-    public static void main(String[] args) {
-        Object lock = new Object();
-        Thread thread1 = new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
-                System.out.println("Thread 1: " + i);
-                synchronized (lock) {
-                    lock.notify(); // Thông báo cho luồng 2
-                    try {
-                        lock.wait(); // Chờ cho đến khi luồng 2 thông báo
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        Thread thread2 = new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
-                synchronized (lock) {
-                    System.out.println("Thread 2: " + i);
-                    try {
-                        lock.wait(); // Chờ cho đến khi luồng 1 thông báo
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    lock.notify(); // Thông báo cho luồng 1
-                }
-            }
-        });
     }
 }

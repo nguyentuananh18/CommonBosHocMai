@@ -4,7 +4,7 @@ import tuanbuffet.common.StringProcessing.*;
 public class Curriculum {
     String curriculum;
     public Curriculum(String curriculum){
-        if (curriculum.toLowerCase().contains("movers") ||curriculum.toLowerCase().contains("flyers") ||curriculum.toLowerCase().contains("beginners") ||curriculum.toLowerCase().contains("starters")){
+        if (curriculum.toLowerCase().contains("mover") || curriculum.toLowerCase().contains("flyer") || curriculum.toLowerCase().contains("beginner") || curriculum.toLowerCase().contains("starter")){
             this.curriculum = CourseType.KidsBox.getValue();
         }
         else if (curriculum.toLowerCase().contains("chat room for")){

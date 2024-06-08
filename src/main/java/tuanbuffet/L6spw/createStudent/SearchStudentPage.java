@@ -12,10 +12,11 @@ public class SearchStudentPage {
     By listStudentData = By.xpath("//tbody/tr");
     By listPackage = By.xpath("//tbody/tr");
     By packageButton = By.xpath("//button[ @type=\"button\" and  contains(text(),'Gói')]");
+    private By searchBefore = By.xpath("//button[normalize-space()='Tìm kiếm']");
     CreateStudentData createStudentData;
 
-    public SearchStudentPage(CreateStudentData data) {
-        this.createStudentData = data;
+    public SearchStudentPage(CreateStudentData createStudentData) {
+        this.createStudentData = createStudentData;
     }
 
     public String getInformationIdBos() {
@@ -37,8 +38,12 @@ public class SearchStudentPage {
 
     public String getInformationIdBosExist() {
         openURL(URl);
+        if (!verifyElementIsDisplay(searchInput,3)){
+            clickElement(searchBefore);
+        }
         enterText(searchInput, createStudentData.getPhone());
         clickElement(searchButton);
+        sleep(2);
         String idBos = "Trùng TK";
         for (int i = 1; i <= listElements(listStudentData); i++) {
             String classInOnWeb = getTextElement(By.xpath("//tbody/tr[" + i + "]/td[4]"));
@@ -48,18 +53,20 @@ public class SearchStudentPage {
                 if (removeAccent(nameOnWeb.toLowerCase()).contains(removeAccent(createStudentData.getName().toLowerCase())) || removeAccent(createStudentData.getName().toLowerCase()).contains(removeAccent(nameOnWeb.toLowerCase()))) {
                     idBos = idBosOnWeb;
                     break;
-                } else {
+                }
+                else {
                     clickElement(By.xpath("//tbody/tr[\" + i + \"]/td[2]"));
-                    sleep(0.5);
+                    sleep(1);
                     switchToWindows(1);
                     clickElement(packageButton);
-                    sleep(1);
+                    sleep(3);
                     if (getTextElement(By.xpath("//tbody/tr/td/p[1]")).contains("Không Có Dữ Liệu")) {
                         closeWindow();
                         switchToWindows(0);
                         idBos = idBosOnWeb;
                         break;
-                    } else {
+                    }
+                    else {
                         int numberPackage = listElements(listPackage);
                         for (int j = 1; j <= numberPackage; j++) {
                             if (getTextElement(By.xpath("//tbody/tr[" + j + "]/td[3]/span")).contains("Official")) {
@@ -76,7 +83,6 @@ public class SearchStudentPage {
                             }
                         }
                     }
-
                 }
             }
         }

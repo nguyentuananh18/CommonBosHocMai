@@ -209,23 +209,20 @@ public class WebUI {
         //Dùng Robot class
     }
 
-    public static void sleep(double second) {
-        try {
-            Thread.sleep((long) (1000 * second));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
     public static void waitForElementVisible(By by, int second) {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(second));
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
     public static void waitForElementVisible(By by) {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        try {
+            WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(EXPLICIT_WAIT_TIMEOUT));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            e.getMessage();
+        }
     }
 
     public static void waitForElementPresent(By by, int second) {
@@ -240,7 +237,6 @@ public class WebUI {
 
     public static void waitForElementClickable(By by, int second) {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(second));
-
         wait.until(ExpectedConditions.elementToBeClickable(by));
     }
 

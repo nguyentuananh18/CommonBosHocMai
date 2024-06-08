@@ -1,7 +1,7 @@
 package tuanbuffet.L6spw.createClass.curriculumPage;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
+
 import static tuanbuffet.L6spw.commonL6.BybyCommon.*;
 import static tuanbuffet.common.StringProcessing.*;
 
@@ -31,34 +31,39 @@ public class CurriculumPage {
 
         clickElement(chooseCurriculum);
         sleep(1);
-        int numberCourses = listElements(listOption);
-        System.out.println("Có " + numberCourses + "giáo trình được nhìn thấy");
         enterText(chooseCurriculum,course);
-        sleep(5);
-        for (int i = 0; i < numberCourses ; i++){
+        for (int i = 0; i<15; i++){
+            if (verifyElementIsDisplay(firstOption)){
+                break;
+            }
+            else sleep(1);
+        }
+
+        for (int i = 0; i <= 250 ; i++){
             try {
                 String courseOnWeb = removeAccentAndSpace(getTextElement("//*[contains(@id,'-option-" + i + "')]"));
                 System.out.print(getTextElement("//*[contains(@id,'-option-" + i + "')]"));
                 if (courseOnWeb.equals(removeAccentAndSpace(course))){
-                    System.out.println("||||" + course + " =>  giống, chọn giáo trình này");
+                    System.out.println("----" + course + " =>  giống, chọn giáo trình này");
                     clickElement(By.xpath("//*[contains(@id,'-option-" + i + "')]"));
                     break;
                 }
                 else {
-                    System.out.println("||||" + course + " => không giống");
+                    System.out.println("----" + course + " => không giống");
                 }
             }
             catch (Exception e){
                 System.out.println("Lỗi ở vị trí :" + i);
             }
-
+            if(i == 250){
+                curriculumData.setNote(curriculumData.getNote() +" Lỗi không tìm thấy giáo trình");
+            }
         }
 
         //Phần này đã ok:)))
         clickElement(chooseLesson);
-        sleep(5);
         //kiểm tra xem có bao nhiêu tùy chọn
-        for (int j = 0 ; j<=3 ; j++){
+        for (int j = 0 ; j <= 15 ; j++){
             if (verifyElementIsDisplay(firstOption)){
                 int numberLesson = listElements(listOption);
                 for (int i = numberLesson-1; i>=0 ; i--){
@@ -68,19 +73,30 @@ public class CurriculumPage {
                             clickElement(By.xpath("//*[contains(@id,'-option-" + i + "')]"));
                             break;
                         }
+                        else {
+                            if (i == numberLesson){
+                                curriculumData.setNote(curriculumData.getNote() +" lỗi add lesson");
+                            }
+                            else curriculumData.setNote("done");
+                        }
                     }
                     catch (Exception e){
-                        System.out.println("tìm Lesson bị lỗi ở: " +i );
+                        System.out.println("tìm Lesson bị lỗi ở: " + i );
                     }
                 }
                 break;
             }
+            else sleep(1);
         }
-
-        //Phần này đã ok:)))
 
         clickElement(saveButton);
         getTextElement(notifyMessage);
+        try {
+            clickElement(closeNotifyMessage);
+        }
+        catch (Exception ignored){
+        }
+
         sleep(1);
     }
 }

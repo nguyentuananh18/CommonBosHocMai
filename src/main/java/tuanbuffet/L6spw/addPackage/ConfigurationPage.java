@@ -1,17 +1,14 @@
 package tuanbuffet.L6spw.addPackage;
 import org.openqa.selenium.By;
 import static tuanbuffet.common.WebUI.*;
+import static tuanbuffet.L6spw.commonL6.BybyCommon.*;
+import static  tuanbuffet.common.StringProcessing.*;
 public class ConfigurationPage {
     String URL = "https://spu.bos.hocmai.com/students/";
-    By contentPage = By.xpath("//p[normalize-space()='08:25 - 08:55']");
-    By teachAllCheckBox = By.xpath("//p[contains(.,'Dạy Tất Cả')]/following-sibling::span/input");
-
-    //MuiCheckbox-root MuiCheckbox-colorPrimary MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary PrivateSwitchBase-root css-1iswrpk
-
-    //MuiCheckbox-root MuiCheckbox-colorPrimary MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary PrivateSwitchBase-root Mui-checked css-1iswrpk
+    By contentPage = By.xpath("//p[contains(text(),'0')]");
     By teachAllButton = By.xpath("//p[contains(.,'Dạy Tất Cả')]/following-sibling::span");
     By saveButton = By.xpath("//button[contains(text(),'Lưu Lại')]");
-    By notifyMessageText = By.xpath("//div[@id='notistack-snackbar']");
+
     PackageAndConfiurationData confiurationData;
     public ConfigurationPage(PackageAndConfiurationData confiurationData){
         this.confiurationData = confiurationData;
@@ -25,17 +22,32 @@ public class ConfigurationPage {
             waitForElementVisible(contentPage);
             clickElement(teachAllButton);
             sleep(1);
+            boolean result =false;
             if (!getAttributeElement(teachAllButton,"class").contains("Mui-checked")){
                 clickElement(teachAllButton);
-                sleep(1);
-                clickElement(saveButton);
-                return getTextElement(notifyMessageText).contains("Cập nhật ca học thành công!");
+                sleep(2);
+                try {
+                    clickElement(saveButton);
+                    result = getTextElement(notifyMessage).contains("Cập nhật ca học thành công!");
+                }
+                catch (Exception e){
+                    clickElement(saveButton);
+                    result = getTextElement(notifyMessage).contains("Cập nhật ca học thành công!");
+                }
+
             }
             else{
-                clickElement(saveButton);
-                return getTextElement(notifyMessageText).contains("Cập nhật ca học thành công!");
+                sleep(2);
+                try {
+                    clickElement(saveButton);
+                    result = getTextElement(notifyMessage).contains("Cập nhật ca học thành công!");
+                }
+                catch (Exception e){
+                    clickElement(saveButton);
+                    result = getTextElement(notifyMessage).contains("Cập nhật ca học thành công!");
+                }
             }
+            return result;
         }
-
     }
 }

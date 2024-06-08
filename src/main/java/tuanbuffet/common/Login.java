@@ -1,8 +1,8 @@
 package tuanbuffet.common;
 
 import org.openqa.selenium.By;
-
 import java.util.Scanner;
+import static tuanbuffet.common.StringProcessing.*;
 
 public class Login extends WebUI {
     private static String URL = "https://spu.bos.hocmai.com/auth/login";
@@ -21,4 +21,5 @@ public class Login extends WebUI {
         sleep(2);
         return verifyElementIsDisplay(titlePageText);
     }
+
 }
