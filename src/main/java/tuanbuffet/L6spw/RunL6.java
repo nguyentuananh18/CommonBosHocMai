@@ -127,7 +127,7 @@ public class RunL6 implements Runnable{
             try {
                 if (!excel.getCell("IDBOS", i).isEmpty()) {
                     excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-                    packageAndConfiurationData = new PackageAndConfiurationData(excel.getCell("IDBOS", i), excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i));
+                    packageAndConfiurationData = new PackageAndConfiurationData(excel.getCell("IDBOS", i), excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i),excel.getCell("CURRICULUM", i));
                     packagePage = new PackagePage(packageAndConfiurationData,listTeacher);
                     boolean acceptanceAddPackage = packagePage.addPackage();
                     lock.lock();
@@ -183,7 +183,7 @@ public class RunL6 implements Runnable{
                 break;
             }
             try {
-                Product product = new Product(excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i), listTeacher);
+                Product product = new Product(excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i),excel.getCell("CURRICULUM", i), listTeacher);
                 if (!excel.getCell("NAME", i).isEmpty()) {
                     className = new ClassName(excel.getCell("NAME", i), excel.getCell("CLASS TYPE", i), excel.getCell("SCHEDULE", i), excel.getCell("TEACHER", i), excel.getCell("CURRICULUM", i), excel.getCell("NAME", i + 1), excel.getCell("CLASS TYPE", i + 1), excel.getCell("SCHEDULE", i + 1), excel.getCell("TEACHER", i + 1), excel.getCell("CURRICULUM", i + 1));
                     lock.lock();
@@ -203,7 +203,7 @@ public class RunL6 implements Runnable{
 
                         studentData = new StudentData(excel.getCell("IDBOS", i), excel.getCell("IDBOS", i + 1),"","");
 
-                        packageAndConfiurationData = new PackageAndConfiurationData(excel.getCell("IDBOS", i), excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i));
+                        packageAndConfiurationData = new PackageAndConfiurationData(excel.getCell("IDBOS", i), excel.getCell("CLASS TYPE", i), excel.getCell("TEACHER", i),excel.getCell("CURRICULUM", i));
                         studentPage = new StudentPage(studentData,packageAndConfiurationData, listTeacher);
                         studentPage.Enterinformation();
                         checkAddStudentPage = new CheckAddStudentPage(studentData);
@@ -230,7 +230,7 @@ public class RunL6 implements Runnable{
                         curriculumPage.Enterinformation();
                         lock.lock();
                         excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
-                        excel.setCell(curriculumData.getNote(),"CURRICULUM",i);
+                        excel.setCell(curriculumData.getNote(),"ADD CURRICULUM",i);
                         lock.unlock();
                     }
                 }

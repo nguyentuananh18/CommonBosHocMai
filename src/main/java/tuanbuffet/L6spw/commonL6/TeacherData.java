@@ -109,8 +109,15 @@ public class TeacherData implements Runnable{
 //        }
         openURL(url);
         verifyElementIsDisplay(By.xpath("//h4[normalize-space()='Danh Sách Giáo Viên']"));
-        sleep(2);
-        enterText(selectProduct, product);
+        if (verifyElementIsDisplay(selectProduct,5)){
+            enterText(selectProduct, product);
+        }
+        else {
+            clickElement(searchCommonButton);
+            sleep(2);
+            enterText(selectProduct, product);
+        }
+
         sleep(1);
         clickElement(firstOption);
         String textFirst = getTextElement(numberOfPage);

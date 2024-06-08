@@ -71,13 +71,14 @@ public class CurriculumPage {
                         String lessonOnWeb = getTextElement("//*[contains(@id,'-option-" + i + "')]");
                         if (lessonOnWeb.equals(lesson)){
                             clickElement(By.xpath("//*[contains(@id,'-option-" + i + "')]"));
+                            curriculumData.setLesson(lesson);
                             break;
                         }
                         else {
                             if (i == numberLesson){
                                 curriculumData.setNote(curriculumData.getNote() +" lỗi add lesson");
                             }
-                            else curriculumData.setNote("done");
+                            else curriculumData.setNote(course +" : " +  curriculumData.getLesson() +" done");
                         }
                     }
                     catch (Exception e){

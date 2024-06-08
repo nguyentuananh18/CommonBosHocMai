@@ -1,7 +1,10 @@
 package tuanbuffet.L6spw.createClass.schedulePage;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+
 import static  tuanbuffet.common.StringProcessing.*;
 import  static  tuanbuffet.common.WebUI.*;
 import  static  tuanbuffet.L6spw.commonL6.BybyCommon.*;
@@ -22,9 +25,21 @@ public class SchedulePage {
         this.scheduleData = scheduleData;
     }
     public void Enterinformation() {
-        enterText(nameCourseInput,scheduleData.getCurriculum() );
+        String nameCourse = scheduleData.getCurriculum();
+        /*enterText(nameCourseInput,nameCourse);*/
+        clickElement(nameCourseInput);
+        List<WebElement> listCourse = ListElements(listOption);
+        for(WebElement course : listCourse){
+            try {
+                if (course.getText().equals(nameCourse)){
+                    course.click();
+                    break;
+                }
+            }
+            catch (Exception ignored){
+            }
+        }
         sleep(1);
-        clickElement(firstOption);
         enterText(startDay,"10102025");
         sleep(1);
         enterText(numberDurationInput,"1");

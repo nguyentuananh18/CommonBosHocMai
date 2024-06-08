@@ -52,10 +52,5 @@ public class ScheduleData {
         this.dayOfWeek = days;
     }
 
-    public static void main(String[] args) {
-        Curriculum curriculum1 = new Curriculum("Starters");
-        ScheduleData scheduleData = new ScheduleData(curriculum1,"abcd");
-        System.out.println(scheduleData.getCurriculum());
-    }
 
 }

@@ -1,17 +1,24 @@
 package tuanbuffet.L6spw.commonL6;
 
 import java.util.List;
+import static tuanbuffet.common.StringProcessing.*;
 
 public class Product {
     String classType;
     String teacherName;
+    String curriculum;
     List<Teacher> listTeacher;
     boolean status = false;
 
-    public Product(String classTypes, String teacherName, List<Teacher> listTeacher){
+    public Product(String classTypes, String teacherName,String curriculum, List<Teacher> listTeacher){
         this.classType = classTypes;
-        this.teacherName = teacherName;
+        this.teacherName = teacherName.toLowerCase();
         this.listTeacher = listTeacher;
+        this.curriculum = removeAccentAndSpace(curriculum);
+    }
+
+    public String getCurriculum() {
+        return curriculum;
     }
 
     public String getClassType() {
@@ -32,13 +39,13 @@ public class Product {
     public String checkTeacherType() {
         String GV = "";
         for (Teacher teacher : listTeacher) {
-            if (teacher.getGVNamPhi() != null && teacher.getGVNamPhi().trim().equals(getTeacherName())) {
+            if (teacher.getGVNamPhi() != null && teacher.getGVNamPhi().trim().toLowerCase().equals(getTeacherName())) {
                 GV = "NAMPHI";
                 break;
-            } else if (teacher.getGVUSUK() != null && teacher.getGVUSUK().trim().equals(getTeacherName())) {
+            } else if (teacher.getGVUSUK() != null && teacher.getGVUSUK().trim().toLowerCase().equals(getTeacherName())) {
                 GV = "USUK";
                 break;
-            } else if (teacher.getGVVN() != null && teacher.getGVVN().trim().equals(getTeacherName())) {
+            } else if (teacher.getGVVN() != null && teacher.getGVVN().trim().toLowerCase().equals(getTeacherName())) {
                 GV = "VN";
                 break;
             } else {
@@ -52,6 +59,10 @@ public class Product {
         String classType = checkClassType();
         String teacherType = checkTeacherType();
         String country;
+        String curriculum = getCurriculum();
+        if(curriculum.contains("easy")){
+            return "EasySpeak";
+        }
 
         if (teacherType.equals("VN")) {
             country = "Việt Nam";

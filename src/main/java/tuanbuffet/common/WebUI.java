@@ -267,6 +267,11 @@ public class WebUI {
         List<WebElement> listElement = getDriver().findElements(by);
         return listElement.size();
     }
+    public static List<WebElement> ListElements(By by){
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        return getDriver().findElements(by);
+    }
 
     public static Boolean checkElementExist(String xpath) {
         List<WebElement> listElement = getDriver().findElements(By.xpath(xpath));
