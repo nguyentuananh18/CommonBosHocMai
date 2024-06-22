@@ -29,7 +29,8 @@ public class SearchStudentPage {
             if (classInOnWeb.contains(createStudentData.getPhone())) {
                 idBos = idBosOnWeb;
                 break;
-            } else if (i == listElements(listStudentData)) {
+            }
+            else if (i == listElements(listStudentData)) {
                 idBos = "Trùng TK";
             }
         }
@@ -38,7 +39,7 @@ public class SearchStudentPage {
 
     public String getInformationIdBosExist() {
         openURL(URl);
-        if (!verifyElementIsDisplay(searchInput,3)){
+        if (!verifyElementIsDisplay(searchInput, 3)) {
             clickElement(searchBefore);
         }
         enterText(searchInput, createStudentData.getPhone());
@@ -69,11 +70,13 @@ public class SearchStudentPage {
                     else {
                         int numberPackage = listElements(listPackage);
                         for (int j = 1; j <= numberPackage; j++) {
-                            if (getTextElement(By.xpath("//tbody/tr[" + j + "]/td[3]/span")).contains("Official")) {
+                            String packageAdded = getTextElement(By.xpath("//tbody/tr[" + j + "]/td[3]/span"));
+                            if (packageAdded.contains("Official") || packageAdded.contains("Chính Thức")) {
                                 closeWindow();
                                 switchToWindows(0);
                                 break;
-                            } else {
+                            }
+                            else {
                                 if (j == numberPackage) {
                                     idBos = idBosOnWeb;
                                     closeWindow();

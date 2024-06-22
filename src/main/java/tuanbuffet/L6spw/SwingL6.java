@@ -47,7 +47,7 @@ public class SwingL6 {
 
         panelRight.setBorder(BorderFactory.createEmptyBorder(10, 0, 130, 10));
 
-        LocalDate givenDate = LocalDate.of(2024, 6, 10);
+        LocalDate givenDate = LocalDate.of(2024, 7, 10);
         LocalDate currentDate = LocalDate.now();
         boolean isFuture = givenDate.isAfter(currentDate);
 

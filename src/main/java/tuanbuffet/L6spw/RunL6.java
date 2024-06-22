@@ -106,8 +106,8 @@ public class RunL6 implements Runnable{
                 }
                 lock.unlock();
             }
-
             catch (Exception e){
+                e.printStackTrace();
                 lock.lock();
                 excel.setExcelFile("C:\\dataAutoBos\\L6SpeakWell.xlsx", "Sheet1");
                 excel.setCell("Cancel_error", "CLASSIN", i);

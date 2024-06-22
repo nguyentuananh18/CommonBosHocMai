@@ -7,7 +7,7 @@ public class Curriculum {
         if (removeAccentAndSpace(curriculum).contains("mover") || removeAccentAndSpace(curriculum).contains("flyer") || removeAccentAndSpace(curriculum).contains("beginner") || removeAccentAndSpace(curriculum).contains("starter")){
             this.curriculum = CourseType.KidsBox.getValue();
         }
-        else if (removeAccentAndSpace(curriculum).contains("chat room for")){
+        else if (removeAccentAndSpace(curriculum).contains("chatroomfor")){
             this.curriculum = CourseType.ChatRoomForTeens.getValue();
         }
         else if (removeAccentAndSpace(curriculum).contains("easy")){
